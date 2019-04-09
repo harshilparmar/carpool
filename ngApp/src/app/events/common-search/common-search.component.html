@@ -1,0 +1,32 @@
+<br><br><br><br>
+<div style="text-align: center; font-weight: lighter !important;">
+<h1 style="font-weight: lighter !important; font-size: 48px;">Don't drive alone. Share the experience.</h1>
+</div>
+<br><br>
+<mat-card  style="background-color:whitesmoke" [class.mat-elevation-z8]="true">
+<mat-form-field  class="example-full-width" >
+  <input #searchEle (keyup)="search(searchEle)" matInput [formControl]="myControl" [matAutocomplete]="auto" placeholder="Enter any place!!" >
+  <mat-hint>Ex.Vadodadara</mat-hint>
+</mat-form-field>
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">{{option}}</mat-option>
+</mat-autocomplete>
+<!-- class="example-full-width" -->
+<!-- {{searchResult | json}} -->
+
+<div class="row mt-5">
+  <div class="col-md-4 mb-3" *ngFor="let list of searchResult">
+    <div  *ngIf="list.departing_date >= today" class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">{{list.departing_from}}</h5>
+        <mat-icon>near_me</mat-icon>
+        <h6 class="card-text">{{list.arriving_at}}</h6>
+        <a [routerLink]="['/events',list._id]" routerLinkActive="router-link-active"  class="btn btn-primary">GO</a>
+      </div>
+      <div class="card-footer text-muted">
+        {{list.departing_date | date }}
+      </div>
+    </div>
+  </div>
+</div>
+</mat-card>

@@ -1,0 +1,29 @@
+
+<!-- <div ><app-navigation></app-navigation></div> -->
+
+<div class="findride"><app-find-ride></app-find-ride></div>
+<app-common-search style="margin: 50px;"></app-common-search>
+
+
+<!-- {{ ridelist | json}} -->
+<!--
+
+<div class="row mt-5">
+  <div class="col-md-4 mb-3" *ngFor="let list of ridelist">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">{{list.departing_from}}</h5>
+        <mat-icon>near_me</mat-icon>
+        <h6 class="card-text">{{list.arriving_at}}</h6>
+        <a [routerLink]="['/events',list._id]" routerLinkActive="router-link-active"  class="btn btn-primary">GO</a>
+      </div>
+      <div class="card-footer text-muted">
+        {{list.departing_date | date }}
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<router-outlet></router-outlet>
+

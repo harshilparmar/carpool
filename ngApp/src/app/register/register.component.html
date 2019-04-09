@@ -1,0 +1,93 @@
+<!-- <div><app-navigation></app-navigation></div> -->
+
+<div  fxLayout="column" fxLayoutAlign="start stretch">
+
+<mat-card class="example-card"  [class.mat-elevation-z8]="true">
+   <mat-card-header>
+       <mat-card-title style="font-size: 36px; margin-left: -20px;" > Register</mat-card-title>
+
+  </mat-card-header>
+  <mat-card-content>
+
+  <form class="example-form" [formGroup]="reg_form" (ngSubmit)="onFormSubmit(reg_form.value)">
+
+
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="First Name" formControlName="first_name" >
+      <mat-error>
+          <span *ngIf="!reg_form.get('first_name').valid && reg_form.get('first_name').touched"> Please enter First Name !!!</span>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Last Name" formControlName="last_name" >
+      <mat-error>
+          <span *ngIf="!reg_form.get('last_name').valid && reg_form.get('last_name').touched">Please enter Last Name !!!</span>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Username" formControlName="userid"  required>
+      <mat-error >
+
+          <span *ngIf="!reg_form.get('userid').valid && reg_form.get('userid').touched">Please Enter username!</span>
+          <span *ngIf="reg_form.get('userid').errors?.minlength ">Name must be at least 5 characters long</span>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <input  type="password" matInput placeholder="password" formControlName="password"  required>
+      <mat-error>
+          <span *ngIf="!reg_form.get('password').valid && reg_form.get('password').touched">Please Enter Password!</span>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+        <input type="email" matInput placeholder="email" formControlName="email" >
+        <mat-hint>use like : demo@demo.com</mat-hint>
+        <mat-error>
+            <span *ngIf="!reg_form.get('email').valid && reg_form.get('email').touched">Please Enter Email!</span>
+        </mat-error>
+
+      </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input type="email" matInput placeholder="Alternate email" formControlName="second_email" >
+    <mat-hint>use like : demo2@demo.com</mat-hint>
+    <mat-error>
+        <span *ngIf="!reg_form.get('email').valid && reg_form.get('email').touched">Please Enter Email!</span>
+      </mat-error>
+
+  </mat-form-field>
+
+
+
+    <mat-form-field class="example-full-width">
+        <span matPrefix>+91 &nbsp;</span>
+        <input type="tel" matInput placeholder="Telephone" formControlName="phone">
+        <mat-error>
+            <span *ngIf="!reg_form.get('phone').valid && reg_form.get('phone').touched">Please Enter phone!</span>
+            <span *ngIf="reg_form.get('phone').errors?.minlength">Phone must be 10 digit long</span>
+        </mat-error>
+
+    </mat-form-field>
+    <span>Gender</span><br>
+    <mat-radio-group class="example-radio-group" formControlName="gender">
+        <mat-radio-button  color="primary"  value="Male">Male</mat-radio-button>
+        <mat-radio-button  value="Female">Female</mat-radio-button>
+      </mat-radio-group>
+      <mat-error>
+        <span *ngIf="!reg_form.get('gender').valid && reg_form.get('gender').touched">Please select any gender !!!</span>
+    </mat-error>
+
+      <mat-card-actions>
+    <button id="sbtn" type="submit" mat-raised-button [disabled]="!reg_form.valid" >Submit</button>
+    <!-- <button id="sbtn" type="button" (click)="loadValue()" mat-raised-button >load value</button> -->
+  </mat-card-actions>
+  </form>
+ </mat-card-content>
+</mat-card>
+</div>
+
+
+

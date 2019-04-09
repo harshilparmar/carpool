@@ -1,0 +1,22 @@
+{{ userprofile | json  }}
+
+<mat-accordion *ngFor="let item of userprofile">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ item.userid }}
+            </mat-panel-title>
+            <mat-panel-description>
+                {{ item.gender}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <p>{{ item.first_name}}</p>
+          <p>{{ item.last_name}}</p>
+          <p>{{ item.email}}</p>
+          <p [hidden]="item.owener">Subscriber</p>
+          <p [hidden]="!item.owener">Car Owener</p>
+          <!-- {{ item.scores}} -->
+      </mat-expansion-panel>
+</mat-accordion>
+
+<app-varify></app-varify>

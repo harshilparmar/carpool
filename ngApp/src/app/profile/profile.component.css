@@ -1,0 +1,17 @@
+.example-radio-group.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  background-color:rgba(66, 134, 244,.26);
+}
+.tp-card {
+  max-width: 400px;
+}
+ /* .container{
+  margin: 0%;
+  padding: 0%;
+}
+
+*{
+  overflow: auto;
+width: 100%;
+display:inline-block;
+
+} */

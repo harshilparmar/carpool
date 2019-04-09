@@ -1,0 +1,12 @@
+#map{
+  position: absolute;
+  top: 22%;
+  left: 25%;
+  /* right: 15%; */
+  height: 522px;
+  width: 50%;
+}
+
+br {
+  line-height: 5px;
+}

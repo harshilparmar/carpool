@@ -1,0 +1,321 @@
+<!-- {{ userDetail | json }} -->
+
+<style>
+  h1 {
+    font-weight: lighter;
+  }
+</style>
+
+<br><br>
+
+<h1 *ngIf="userDetail.owener">Hello Car Owner!</h1>
+<h1 *ngIf="!userDetail.owener">Hello Subscriber!</h1>
+<br>
+
+<small><button   mat-button color="primary" *ngIf="!userDetail.owener" (click)="redirect()">Provide Service?</button> </small>
+<small><button   mat-button color="primary" *ngIf="!userDetail.owener" (click)="currentLocation(userDetail.second_email)">Your Location</button> </small>
+<mat-tab-group>
+  <mat-tab label="Profile">
+    <style>
+      mat-card {
+        margin: 10px 0;
+      }
+      </style>
+    <mat-card>
+        <span>Name </span>
+        <h3>{{ userDetail.first_name  | titlecase}}</h3>
+
+
+
+      </mat-card>
+      <mat-card>
+          <span>Last Name </span>
+          <h3>{{ userDetail.last_name | titlecase }}</h3>
+
+
+
+        </mat-card>
+        <mat-card>
+            <span>Email </span>
+            <h3>{{ userDetail.email  }}</h3>
+
+
+
+          </mat-card>
+
+          <mat-card>
+              <span>Contact </span>
+              <h3>{{ userDetail.phone  }}</h3>
+
+
+
+            </mat-card>
+
+            <mat-card>
+                <span>User ID </span>
+                <h3>{{ userDetail.userid  }}</h3>
+
+
+
+              </mat-card>
+
+
+    <!-- FirstName :  <h2> {{ userDetail.first_name | uppercase }}</h2>
+    LastName : <h2>{{ userDetail.last_name | uppercase }}</h2>
+    UseId: <h2> {{ userDetail.userid }}</h2>
+    Email : <h2>{{ userDetail.email }}</h2> -->
+
+  </mat-tab>
+  <mat-tab label="Update Profile">
+
+    <mat-card>
+
+        <form [formGroup]="updateForm" (ngSubmit)="update(updateForm.value)">
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="First Name" formControlName="first_name">
+          </mat-form-field>
+          <mat-error>
+            <small *ngIf="!updateForm.get('first_name').valid && updateForm.get('first_name').touched"> Please enter
+              First Name !!!</small>
+          </mat-error>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Last Name" formControlName="last_name">
+          </mat-form-field>
+          <mat-error>
+            <small *ngIf="!updateForm.get('last_name').valid && updateForm.get('last_name').touched">Please enter Last
+              Name !!!</small>
+          </mat-error>
+
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Username" formControlName="userid" required>
+          </mat-form-field>
+          <mat-error>
+            <small *ngIf="!updateForm.get('userid').valid && updateForm.get('userid').touched">Please Enter username!</small>
+            <small *ngIf="updateForm.get('userid').errors?.minlength ">Name must be at least 5 characters long</small>
+          </mat-error>
+
+
+          <mat-form-field class="example-full-width">
+            <input type="email" matInput placeholder="email" formControlName="email">
+            <mat-hint>use like : demo@demo.com</mat-hint>
+          </mat-form-field>
+          <mat-error>
+            <small *ngIf="!updateForm.get('email').valid && updateForm.get('email').touched">Please Enter Email!</small>
+          </mat-error>
+          <mat-form-field class="example-full-width">
+            <small matPrefix>+91 &nbsp;</small>
+            <input type="tel" matInput placeholder="Telephone" formControlName="phone">
+
+          </mat-form-field>
+          <mat-error>
+            <small *ngIf="!updateForm.get('phone').valid && updateForm.get('phone').touched">Please Enter phone!</small>
+            <small *ngIf="updateForm.get('phone').errors?.minlength">Phone must be 10 digit long</small>
+          </mat-error>
+          <!-- <br> -->
+          <mat-radio-group class="example-radio-group" formControlName="gender">
+            <mat-radio-button color="primary" value="Male">Male</mat-radio-button>
+            <mat-radio-button color="primary" value="Female">Female</mat-radio-button>
+          </mat-radio-group>
+          <mat-error>
+            <small *ngIf="!updateForm.get('gender').valid && updateForm.get('gender').touched">Please select any gender
+              !!!</small>
+          </mat-error>
+          <br>
+          <button type="submit"  mat-raised-button >Update </button>
+        </form>
+                    <!-- <mat-form-field class="example-full-width">
+                <input  type="password" matInput placeholder="password" formControlName="password"  required>
+              </mat-form-field> -->
+                    <!-- <mat-error>
+                <span *ngIf="!updateForm.get('password').valid && updateForm.get('password').touched">Please Enter Password!</span>
+            </mat-error> -->
+    </mat-card>
+  </mat-tab>
+
+  <mat-tab *ngIf="userDetail.owener"  label="Request to approve ">
+      <!-- {{rideReq | json}} -->
+    <mat-card *ngIf="userRides.length != null ; else NoReq">
+
+      <div *ngFor="let req of rideReq">
+        <li>Userid :  <span> {{req.userid.first_name}}</span> </li> <br>
+
+        <!-- <p>for</p> -->
+        <li>Ride : {{req.rideid._id}}</li>
+        <button mat-raised-button color="primary"  (click)="accept(req.userid._id,req.rideid._id)">Accept</button>&nbsp;
+        <button mat-raised-button color="warn" (click)="reject(req._id)" >Reject</button>
+      </div>
+
+    </mat-card>
+    <ng-template #NoReq>
+        <p class="mat-display-1">No req!!</p>
+      </ng-template>
+
+
+
+  </mat-tab>
+
+  <mat-tab *ngIf="userDetail.owener" label="Ride Detail" >
+
+    {{owenerRides | json}}
+    <mat-card  class ="tp-card" *ngFor="let ride of owenerRides">
+
+            <mat-card-header>
+               <mat-card-title>{{ ride.departing_from }} <mat-icon>near_me</mat-icon> {{ ride.arriving_at }}  </mat-card-title>
+               <mat-card-subtitle> {{ ride.departing_date | date}} &nbsp; {{ ride.departure_time  }}  </mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content>
+              <li>{{ ride.waypoints  }}</li>
+              <li *ngIf="ride.returndate">{{ ride.returndate }}</li>
+              <li *ngIf="ride.returndate">{{ ride.returntime }}</li>
+              <li>{{ ride.vehicle_type }}</li>
+              <li>{{ ride.vehicle_number }}</li>
+              <li>{{ ride.source_faddress }}</li>
+              <li>{{ ride.number_sits }}</li>
+              <li>{{ ride.des_faddress }}</li>
+              <li>{{ ride.rider | json }}</li>
+              chattiness <li>{{ ride.preferences.chattiness }}</li>
+              Smoking<li>{{ ride.preferences.Smoking }}</li>
+              pets <li>{{ ride.preferences.pets }}</li>
+              music <li>{{ ride.preferences.music }}</li>
+
+
+            </mat-card-content>
+            <!-- <mat-card-actions>
+               <button mat-button>LIKE</button>
+               <button mat-button>SHARE</button>
+            </mat-card-actions> -->
+
+    </mat-card>
+
+
+
+
+
+
+
+
+
+
+    <!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+      <mat-button-toggle value="upcoming" (click)="showRides()">upcoming</mat-button-toggle>
+      <mat-button-toggle value="past" (click)="showRides()"> past</mat-button-toggle>
+
+    </mat-button-toggle-group> -->
+
+  </mat-tab>
+
+
+
+  <mat-tab label="Bookings">
+
+<!-- {{userRides | json}} -->
+     <div *ngIf="userRides.length != null ; else NoBook">
+        <!-- {{ ridedetail | json}} -->
+
+          <ul>
+          <li>
+           form:   {{userRides.rides[0].rideID.departing_from }}
+
+          </li>
+          <li>
+            To:   {{userRides.rides[0].rideID.arriving_at }}
+
+          </li>
+          <li>
+           Date:   {{userRides.rides[0].rideID.departing_date | date }}
+
+          </li>
+          <li>
+          Time :  {{userRides.rides[0].rideID.departure_time }}
+
+          </li>
+          <li>
+           Waypoints:   {{userRides.rides[0].rideID.waypoints}}
+
+          </li>
+          <li *ngIf="ridedetail.returndate">
+           Return date:   {{ridedetail.returndate}}
+
+          </li>
+          <li *ngIf="ridedetail.returntime">
+              Return Time:   {{ridedetail.returntime}}
+
+          </li>
+          <li>
+          Vehicle Type:    {{userRides.rides[0].rideID.vehicle_type}}
+
+          </li>
+          <li>
+              Vehicle Number:   {{userRides.rides[0].rideID.vehicle_number}}
+
+          </li>
+          <li>
+            Source Address:  {{userRides.rides[0].rideID.source_faddress}}
+
+          </li>
+          <li>
+              Destination Address:  {{userRides.rides[0].rideID.des_faddress}}
+
+          </li>
+          <li>
+            Provided By:  {{userRides.rides[0].rideID.des_faddress}}
+
+        </li>
+        </ul>
+
+    </div>
+    <ng-template #NoBook>
+      <p class="mat-display-1">No Booking !!</p>
+    </ng-template>
+
+
+
+  </mat-tab>
+   <mat-tab *ngIf="userDetail.owener" label="Load Transport Request">
+
+      {{ loadReq | json }}
+
+    <div *ngFor="let req of loadReq">
+      <div  *ngIf="req.isConfirm != true" >
+      <ul>
+        <li>{{req.departure_address}}</li>
+        <li>{{req.arrival_address}}</li>
+        <li>{{req.description}}</li>
+        <li>{{req.dateofdel}}</li>
+        <li>{{req.weight}}KG.</li>
+        <li>{{req.type}}</li>
+        <li>{{req.priority}}</li>
+
+      </ul>
+
+      <button mat-raised-button color="primary"  (click)="acceptloadreq(req.userid,req._id)">Accept</button>&nbsp;
+      <!-- <button mat-raised-button color="warn" (click)="rejectloadreq(req._id)" >Reject</button> -->
+    </div>
+    </div>
+
+
+    </mat-tab>
+    <mat-tab *ngIf="!userDetail.owener" label="Load Request Approved">
+
+      <!-- <p>load request accecpted</p> -->
+<!-- {{userRides | json}} -->
+      <mat-card>
+        <div *ngFor="let load of userRides.loadtransport ">
+
+        <p>Your loading request for  {{load.reqid.departure_address}} to {{load.reqid.arrival_address }} on  {{load.reqid.dateofdel | date}}  is confiremed </p>
+        <p>by {{load.shippedBy.first_name}} {{load.shippedBy.last_name}} </p>
+        <p>Contact them from email : {{load.shippedBy.email}}  or mobile : {{load.shippedBy.phone}} for more detail</p>
+
+      </div>
+      </mat-card>
+      <br>
+
+</mat-tab>
+
+
+
+
+
+</mat-tab-group>

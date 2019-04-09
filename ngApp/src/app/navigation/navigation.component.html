@@ -1,0 +1,141 @@
+<!-- <div style="height: 100vh;">
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Carpool</span>
+      <span class="example-spacer"></span>
+      <div fxShow="true" fxHide.lt-md="true">
+
+        <a class="nav-link" routerLink="/events" routerLinkActive="active" mat-button>
+          <mat-icon>place</mat-icon>
+          Find Ride
+        </a>
+
+        <a class="nav-link" routerLink="/special" routerLinkActive="active" mat-button>
+          <mat-icon>airport_shuttle</mat-icon>
+          Offer Ride
+        </a>
+        <a class="nav-link"  *ngIf="!_authService.loggedIn()"  routerLink="/login" routerLinkActive="active" mat-button>
+          <mat-icon>exit_to_app </mat-icon>
+          Login
+        </a>
+        <a class="nav-link"  *ngIf="!_authService.loggedIn()" routerLink="/register" routerLinkActive="active" mat-button>
+          <mat-icon>how_to_reg</mat-icon>
+          Register
+        </a>
+       <a class="nav-link"   *ngIf="_authService.loggedIn()"  style="cursor:pointer" [routerLink]="['/profile']" routerLinkActive="router-link-active"   mat-button>
+          <mat-icon>account_box</mat-icon>
+          My Account
+        </a>
+         <a class="nav-link"   *ngIf="_authService.loggedIn()"  style="cursor:pointer" (click)="_authService.loggedOut()"  mat-button>
+          <mat-icon>exit_to_app</mat-icon>
+            logout
+        </a>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-sidenav-container fxFlexFill>
+    <mat-sidenav #sidenav>
+      <mat-nav-list>
+        <a  routerLink="/events" routerLinkActive="active" mat-list-item>
+         <mat-icon>place</mat-icon>
+          Find Ride
+        </a>
+        <a  routerLink="/special" routerLinkActive="active" mat-list-item>
+          <mat-icon>airport_shuttle</mat-icon>
+          Offer Ride
+        </a>
+        <a  *ngIf="_authService.loggedIn()"  style="cursor:pointer" [routerLink]="['/profile']" routerLinkActive="router-link-active"  mat-list-item>
+          <mat-icon>account_box</mat-icon>
+          My Account
+        </a>
+        <a   *ngIf="_authService.loggedIn()"  style="cursor:pointer" (click)="_authService.loggedOut()" mat-list-item>
+          <mat-icon>exit_to_app</mat-icon>
+          logout
+        </a>
+        <a  *ngIf="!_authService.loggedIn()"  routerLink="/login" routerLinkActive="active" mat-button>
+          <mat-icon>exit_to_app </mat-icon>
+          Loginx
+        </a>
+        <a  *ngIf="!_authService.loggedIn()" routerLink="/register" routerLinkActive="active" mat-button>
+          <mat-icon>how_to_reg</mat-icon>
+          Register
+        </a>
+        <a (click)="sidenav.toggle()" mat-list-item>
+          <mat-icon>close</mat-icon> Close
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content fxFlexFill><router-outlet></router-outlet></mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+ -->
+
+ <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark"  >
+    <a class="navbar-brand" href="#">Carpool</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/events" routerLinkActive="active">Find ride</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/special" routerLinkActive="active">Offer ride</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/load" routerLinkActive="active">Load shuttle</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+          <a class="nav-link"  *ngIf="!_authService.loggedIn()"  routerLink="/login" routerLinkActive="active">Login</a>
+          <a class="nav-link"  *ngIf="!_authService.loggedIn()" routerLink="/register" routerLinkActive="active">Register</a>
+          <a class="nav-link"   *ngIf="_authService.loggedIn()"  style="cursor:pointer" [routerLink]="['/profile']" routerLinkActive="router-link-active"  >Profile </a>
+          <a class="nav-link"   *ngIf="_authService.loggedIn()"  style="cursor:pointer" (click)="_authService.loggedOut()"  >Logout</a>
+
+      </ul>
+    </div>
+  </nav>
+   -->
+  <nav  class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+

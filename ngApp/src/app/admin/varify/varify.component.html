@@ -1,0 +1,19 @@
+<mat-card>
+  <h1 [matBadge]="recordCount" matBadgeColor="warn">Pending varification</h1>
+  <!-- {{ userprofile | json  }} -->
+  <div  *ngFor="let item of userprofile">
+    <!-- <p>{{ item.userid | json }}<p> -->
+        <p>{{ item.userid.first_name }}<p>
+            <p>{{ item.userid.last_name  }}<p>
+
+                    <p>{{ item.userid.email  }}<p>
+                        <p>{{ item.userid.gender  }}<p>
+                        <p>{{ item.licence_number }}<p>
+                            <p>{{ item.licence_date | date}}</p>
+                            <button type="button"  (click)="downloadFile(item.license_photo)" mat-flat-button>Download</button>
+                            <button type="button" style="margin: 50px;" (click)="accept(item.userid._id)" mat-raised-button color="primary">Accept</button>
+                            <button type="button" (click)="reject(item.userid._id)" mat-raised-button color="warn">Reject</button>
+  </div>
+
+
+</mat-card>

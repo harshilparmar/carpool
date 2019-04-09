@@ -1,0 +1,49 @@
+
+{{ rideDetail | json  }}
+
+<mat-card >
+
+  <mat-card-title>{{rideDetail.departing_from | uppercase}} <mat-icon>keyboard_arrow_right</mat-icon>{{rideDetail.arriving_at | uppercase}}
+  <span><div *ngIf="(rideDetail.number_sits <= 0)">
+      <p style="color: red;"> THIS RIDE IS FULL</p>
+    </div></span>
+  </mat-card-title>
+  <mat-card-subtitle>
+      {{rideDetail.departing_date | date }}
+      {{rideDetail.departure_time }}
+
+  </mat-card-subtitle>
+
+    <mat-card-content>
+      <p>Provide By:  <span> {{rideDetail.owenerID.first_name}}  {{ rideDetail.owenerID.last_name }} ({{ rideDetail.owenerID.gender }}) </span> </p>
+      <p>Waypoints:  <span> {{rideDetail.waypoints }} </span> </p>
+      <p>Ride type:  <span> {{rideDetail.vehicle_type }} </span> </p>
+      <p>Vehicle number:  <span> {{rideDetail.vehicle_number  | uppercase}} </span> </p>
+      <!-- <ng-template #templateName> -->
+        <p *ngIf="!(rideDetail.number_sits <= 0)"> Available Sits :<span> {{rideDetail.number_sits | number }} </span> </p>
+      <!-- </ng-template> -->
+      <p>Source Address :  <span> {{rideDetail.source_faddress | uppercase }} </span> </p>
+      <p>Destination Address :  <span> {{rideDetail.des_faddress | uppercase }} </span> </p>
+      <p>Preferences   </p>
+      <li>Chattiness is    {{rideDetail.preferences.chattiness  == true ? 'ALLOWED' : 'NOT ALLOWED' }} </li>
+      <li>Smoking is {{rideDetail.preferences.Smoking == true ? 'ALLOWED' : 'NOT ALLOWED'   }}</li>
+      <li>Pets  is {{rideDetail.preferences.pets == true ? 'ALLOWED' : 'NOT ALLOWED'  }}</li>
+      <li>Music  is {{rideDetail.preferences.music == true ? 'ALLOWED' : 'NOT ALLOWED'  }}</li>
+
+
+    </mat-card-content>
+
+    <mat-card-footer>
+        <div *ngIf="(rideDetail.number_sits <= 0) || (rideDetail.departing_date <= today) ;else btnride" >
+        <button style="margin-left: 350px;margin-bottom: 10px;" mat-raised-button color="primary" [disabled]="true" (click)="bookRide(rideDetail.owenerID,rideDetail._id)">Book ride</button>
+         </div>
+         <ng-template #btnride>
+         <button style="margin-left: 350px;margin-bottom: 10px;" mat-raised-button color="primary" [disabled]="false" (click)="bookRide(rideDetail.owenerID,rideDetail._id)">Book ride</button>
+         </ng-template>
+        </mat-card-footer>
+
+  </mat-card>
+
+
+
+

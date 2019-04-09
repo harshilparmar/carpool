@@ -1,0 +1,116 @@
+<!-- <router-outlet></router-outlet> -->
+<!-- <div><app-navigation></app-navigation></div> -->
+
+
+
+
+
+<div class="row mt-5" [class.mat-elevation-z8]="true" style="padding: 30px;">
+  <form [formGroup]="offerRide" (ngSubmit)="onFormSubmit(offerRide.value)">
+
+    <mat-form-field class="input-field">
+      <input required matInput formControlName="departing_from" placeholder="Your departure City">
+      <mat-error>
+          <span *ngIf="!offerRide.get('departing_from').valid && offerRide.get('departing_from').touched"> Please enter departure City !!!</span>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="input-field">
+      <input required matInput formControlName="arriving_at" placeholder="Your arrival City">
+      <mat-error>
+        <span *ngIf="!offerRide.get('arriving_at').valid && offerRide.get('arriving_at').touched"> Please enter arrival City !!!</span>
+    </mat-error>
+    </mat-form-field>
+
+    <br>
+      <!-- full address -->
+    <mat-form-field class="input-field">
+      <input  matInput formControlName="source_faddress" placeholder="Your departure full address">
+    </mat-form-field>
+
+    <mat-form-field class="input-field">
+      <input  matInput formControlName="des_faddress" placeholder="Your arrival  full address">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="input-field">
+        <input required matInput formControlName="waypoints" placeholder="Way Points">
+        <mat-error>
+            <span *ngIf="!offerRide.get('waypoints').valid && offerRide.get('waypoints').touched"> Please enter Waypoints City !!!</span>
+        </mat-error>
+      </mat-form-field>
+      <br>
+      <mat-checkbox (change)="checkfun($event.checked)"  required matInput formControlName="roundtrip" color="primary">Round Trip</mat-checkbox>
+      <br>
+ <div id="datetime">
+<mat-form-field>
+
+        <input required matInput   [min]="minDate"     [matDatepicker]="pickerdepart" formControlName="departing_date" placeholder="Departure date">
+        <mat-datepicker-toggle matSuffix [for]="pickerdepart"></mat-datepicker-toggle>
+        <mat-datepicker #pickerdepart  touchUi    ></mat-datepicker>
+</mat-form-field>
+    <!-- <input required matInput type="checkbox" formControlName="roundtrip" > -->
+    <input required [ngxTimepicker]="picker" placeholder="Time" formControlName="departure_time">
+    <ngx-material-timepicker #picker></ngx-material-timepicker>
+  <br>
+<!-- <div formArrayName="returntrip"> -->
+  <!-- <div *ngFor="let address of offerRide.controls.returntrip.controls; let i=index"> -->
+      <!-- <div [formGroupName]="i"> -->
+        <div [hidden]="toggle">
+        <mat-form-field >
+
+          <input  required matInput  [min]="minDate"  [matDatepicker]="pickerreturn" formControlName="returndate" placeholder="Return date">
+          <mat-datepicker-toggle matSuffix [for]="pickerreturn"></mat-datepicker-toggle>
+          <mat-datepicker #pickerreturn touchUi  ></mat-datepicker>
+    </mat-form-field>
+        <!-- <input required matInput type="checkbox" formControlName="roundtrip" > -->
+        <input required [ngxTimepicker]="picker2" placeholder="Time" formControlName="returntime">
+        <ngx-material-timepicker #picker2></ngx-material-timepicker>
+      </div>
+        <br>
+  </div><br>
+  <!-- //vehicle type -->
+  <h4><span>Vehicle type</span></h4>  <br>
+    <mat-radio-group class="example-radio-group" formControlName="vehicle_type">
+        <mat-radio-button  color="warn" value="car">car</mat-radio-button>&nbsp;
+        <mat-radio-button color="warn"  value="bike">bike</mat-radio-button>
+      </mat-radio-group>
+      <mat-error>
+        <span *ngIf="!offerRide.get('vehicle_type').valid && offerRide.get('vehicle_type').touched">Please select ride type</span>
+    </mat-error>
+
+  <mat-form-field class="input-field">
+    <input required matInput formControlName="vehicle_number" placeholder="Your Vehicle number">
+    <mat-hint><small>GJ6-CE-8792 </small> </mat-hint>
+    <mat-error>
+        <span *ngIf="!offerRide.get('vehicle_number').valid && offerRide.get('vehicle_number').touched"> Please enter Vehicle Number!!!</span>
+        <span *ngIf="offerRide.get('vehicle_number').errors?.pattern"> Please enter Valid Vehicle Number </span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="input-field">
+    <input type="number" required matInput formControlName="number_sits" min="1" placeholder="Number Sits you provide">
+    <mat-error>
+        <span *ngIf="offerRide.get('number_sits').errors?.min ">You have to provide at least one sit </span>
+    </mat-error>
+
+  </mat-form-field>
+
+  <br>
+
+  <div  formGroupName="preferences">
+  <mat-checkbox color="primary" formControlName="chattiness">chattiness</mat-checkbox>&nbsp;
+  <mat-checkbox color="primary" formControlName="Smoking">Smoking</mat-checkbox>&nbsp;
+  <mat-checkbox color="primary" formControlName="pets">pets</mat-checkbox>&nbsp;
+  <mat-checkbox color="primary" formControlName="music">music</mat-checkbox>&nbsp;
+</div>
+
+   <!-- </div> -->
+    <!-- </div> -->
+  <!-- </div> -->
+<br>
+    <button type="submit" id="btn" mat-raised-button color="" style="padding: 12px 24px; font-size: 20px;">Submit</button>
+
+    <br><br>
+  </form>
+
+</div>
