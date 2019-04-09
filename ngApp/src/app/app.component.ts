@@ -8,7 +8,7 @@ import { UserprofileService } from "./common/service/userprofile.service";
 })
 export class AppComponent implements OnInit {
   title = "ngApp";
-  isAdmin  : Boolean = (localStorage.getItem('isAdmin') == "true");
+  // isAdmin  : Boolean = (localStorage.getItem('isAdmin') == "true");
 
 
   constructor(

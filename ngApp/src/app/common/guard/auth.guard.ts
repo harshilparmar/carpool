@@ -36,8 +36,8 @@ export class AuthGuard implements CanActivate {
             return true;}
               else if(state.url.indexOf('beOwener')!=-1){
               return true;}
-              // else if(state.url.indexOf('admin')!=-1 && JSON.parse(temp).userRole=='principal')
-              // return true;
+              else if(state.url.indexOf('admin')!=-1){
+              return true;}
       }
 
       else{

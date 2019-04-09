@@ -1,4 +1,4 @@
-<!-- {{ userDetail | json }} -->
+{{ userDetail | json }}
 
 <style>
   h1 {
@@ -157,7 +157,7 @@
 
   <mat-tab *ngIf="userDetail.owener" label="Ride Detail" >
 
-    {{owenerRides | json}}
+    <!-- {{owenerRides | json}} -->
     <mat-card  class ="tp-card" *ngFor="let ride of owenerRides">
 
             <mat-card-header>
@@ -166,26 +166,19 @@
             </mat-card-header>
 
             <mat-card-content>
-              <li>{{ ride.waypoints  }}</li>
-              <li *ngIf="ride.returndate">{{ ride.returndate }}</li>
-              <li *ngIf="ride.returndate">{{ ride.returntime }}</li>
-              <li>{{ ride.vehicle_type }}</li>
-              <li>{{ ride.vehicle_number }}</li>
-              <li>{{ ride.source_faddress }}</li>
-              <li>{{ ride.number_sits }}</li>
-              <li>{{ ride.des_faddress }}</li>
-              <li>{{ ride.rider | json }}</li>
-              chattiness <li>{{ ride.preferences.chattiness }}</li>
-              Smoking<li>{{ ride.preferences.Smoking }}</li>
+              <p>Your journey  is starts from {{ ride.source_faddress | titlecase }} to {{ ride.des_faddress | titlecase }}
+                via {{ ride.waypoints | titlecase }} on {{ ride.vehicle_type | titlecase }}  with <span *ngFor="let riders of ride.rider">
+                  {{riders.userID.first_name | titlecase }} {{riders.userID.last_name | titlecase }} . </span>You are
+                  providing {{ ride.number_sits  }} number of seats. <span *ngIf="ride.returndate && ride.returndate">You are returning to {{ ride.returndate }} on {{ ride.returntime }}</span>
+                  <span *ngIf="ride.preferences.Smoking != true">Smoking Is not allowed with you</span>
+                </p>
+
+                <!-- chattiness <li>{{ ride.preferences.chattiness }}</li>
               pets <li>{{ ride.preferences.pets }}</li>
-              music <li>{{ ride.preferences.music }}</li>
+              music <li>{{ ride.preferences.music }}</li> -->
 
 
             </mat-card-content>
-            <!-- <mat-card-actions>
-               <button mat-button>LIKE</button>
-               <button mat-button>SHARE</button>
-            </mat-card-actions> -->
 
     </mat-card>
 
@@ -273,7 +266,7 @@
 
 
   </mat-tab>
-   <mat-tab *ngIf="userDetail.owener" label="Load Transport Request">
+   <mat-tab *ngIf="userDetail.owener" label="Load Transport Request to Approve">
 
       {{ loadReq | json }}
 
@@ -293,15 +286,28 @@
       <button mat-raised-button color="primary"  (click)="acceptloadreq(req.userid,req._id)">Accept</button>&nbsp;
       <!-- <button mat-raised-button color="warn" (click)="rejectloadreq(req._id)" >Reject</button> -->
     </div>
-    </div>
+  </div>
+
+    </mat-tab>
+
+    <mat-tab *ngIf="userDetail.owener" label="Load to transport">
+      <mat-card>
+        {{ userRides | json}}
+        <div *ngFor="let load of userRides.loadtransport ">
+
+        <p>Your loading request for  {{load.reqid.departure_address}} to {{load.reqid.arrival_address }} on  {{load.reqid.dateofdel | date}}  is confiremed </p>
+        <p>by {{load.shippedBy.first_name}} {{load.shippedBy.last_name}} </p>
+        <p>Contact them from email : {{load.shippedBy.email}}  or mobile : {{load.shippedBy.phone}} for more detail</p>
+
+      </div>
+      </mat-card>
 
 
     </mat-tab>
-    <mat-tab *ngIf="!userDetail.owener" label="Load Request Approved">
 
-      <!-- <p>load request accecpted</p> -->
-<!-- {{userRides | json}} -->
-      <mat-card>
+
+    <mat-tab *ngIf="!userDetail.owener" label="Load Request Approved">
+<mat-card>
         <div *ngFor="let load of userRides.loadtransport ">
 
         <p>Your loading request for  {{load.reqid.departure_address}} to {{load.reqid.arrival_address }} on  {{load.reqid.dateofdel | date}}  is confiremed </p>
