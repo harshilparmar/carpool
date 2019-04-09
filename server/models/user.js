@@ -21,13 +21,15 @@ let userSchema = new schema({
         license_photo : String,
            // coustomer : [userSchema]
         },
+        //rides history
     rides : [{
             rideID : { type: mongoose.Schema.Types.ObjectId, ref: 'offeredride' }
              }],
     loadtransport : [{
                 reqid : { type: mongoose.Schema.Types.ObjectId, ref: 'loadReq' },
                 shippedBy : { type: mongoose.Schema.Types.ObjectId, ref: 'carpool' }  
-             }]             
+             }],
+    transportByme : [{ reqid : { type: mongoose.Schema.Types.ObjectId, ref: 'loadReq' }}]                      
 });   
 
 userSchema.pre('save', function(next) {

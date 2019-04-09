@@ -514,6 +514,7 @@ router.post('/loadaccept',async (req,res)=>{
   
     
     await User.findByIdAndUpdate(userId,{$push :{loadtransport : { reqid: reqId , shippedBy : shippedID}}});
+   await User.findByIdAndUpdate(shippedID,{$push :{transportByme : { reqid: reqId }}});
     let done = await loadReq.findByIdAndUpdate(reqId, { isConfirm: true } );
 
       
