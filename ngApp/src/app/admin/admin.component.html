@@ -1,6 +1,33 @@
-{{ userprofile | json  }}
+<!-- {{ userprofile | json  }} -->
+<h2>Detail of All Users:</h2>
+<table>
 
-<mat-accordion *ngFor="let item of userprofile">
+  <tr>
+  <th>Userid</th>
+  <th>Gender</th>
+  <th>First Name</th>
+  <th>Last Name</th>
+  <th>Roll</th>
+  <th>Email</th>
+  <th>Another Email</th>
+    <th>Contact No:</th>
+</tr>
+<tr *ngFor="let item of userprofile">
+    <td>{{ item.userid | titlecase}}</td>
+    <td>{{ item.gender | titlecase}}</td>
+    <td>{{ item.first_name | titlecase}}</td>
+    <td>{{ item.last_name | titlecase}}</td>
+    <td [hidden]="item.owener">Subscriber</td>
+    <td [hidden]="!item.owener">Car Owener</td>
+    <td>{{ item.email }}</td>
+    <td>{{ item.second_email }}</td>
+  <td> {{ item.phone }}</td>
+  </tr>
+
+</table>
+
+
+<!-- <mat-accordion *ngFor="let item of userprofile">
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -15,8 +42,8 @@
           <p>{{ item.email}}</p>
           <p [hidden]="item.owener">Subscriber</p>
           <p [hidden]="!item.owener">Car Owener</p>
-          <!-- {{ item.scores}} -->
-      </mat-expansion-panel>
-</mat-accordion>
 
+      </mat-expansion-panel>
+</mat-accordion> -->
+<br>
 <app-varify></app-varify>

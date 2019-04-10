@@ -139,7 +139,8 @@
   </mat-tab>
 
   <mat-tab *ngIf="userDetail.owener" label="Request to approve ">
-    <!-- {{rideReq | json}} -->
+    <!-- ! complete this
+       {{rideReq | json}} -->
     <mat-card *ngIf="userRides.length != null ; else NoReq">
 
       <div *ngFor="let req of rideReq">
@@ -164,6 +165,7 @@
 
     <!-- {{owenerRides | json}} -->
     <!-- ! color #EBF6FD -->
+
     <mat-card style="background:whitesmoke" class="tp-card" *ngFor="let ride of owenerRides">
 
       <mat-card-header>
@@ -278,7 +280,7 @@
 
     <!-- {{ loadReq | json }} -->
     <div *ngFor="let req of loadReq">
-      <div *ngIf="req.isConfirm != true;else Noloadreq">
+      <div *ngIf="req.isConfirm != true"> <!--todo ;else Noloadreq-->
         <mat-card style="background:  whitesmoke">
 
           <h3> <span> {{req.departure_address | uppercase}} <mat-icon>arrow_forward</mat-icon>
@@ -324,16 +326,19 @@
 
 
   <mat-tab *ngIf="!userDetail.owener" label="Load Request Approved">
-    <mat-card>
+
+    <div *ngIf="userRides.loadtrasport != null;else Noreqapprove" >
       <div *ngFor="let load of userRides.loadtransport ">
 
+        <mat-card >
         <p>Your loading request for {{load.reqid.departure_address}} to {{load.reqid.arrival_address }} on
           {{load.reqid.dateofdel | date}} is confiremed </p>
         <p>by {{load.shippedBy.first_name}} {{load.shippedBy.last_name}} </p>
         <p>Contact them from email : {{load.shippedBy.email}} or mobile : {{load.shippedBy.phone}} for more detail</p>
-
+      </mat-card>
       </div>
-    </mat-card>
+    </div>
+    <ng-template #Noreqapprove><h4>You have not submitted any requset!</h4></ng-template>
     <br>
 
   </mat-tab>
