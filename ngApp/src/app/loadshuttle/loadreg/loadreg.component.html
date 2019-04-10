@@ -6,57 +6,63 @@
   </mat-card-header>
   <mat-card-content>
 
-  <form class="example-form" #myform [formGroup]="loadDetail" >
+    <form class="example-form" #myform [formGroup]="loadDetail">
       <mat-form-field class="example-full-width">
-          <input required matInput placeholder="departure_address" formControlName="departure_address" >
-          <mat-error>
-            <span *ngIf="!loadDetail.get('departure_address').valid && loadDetail.get('departure_address').touched"> Please enter departure_address</span>
+        <input required matInput placeholder="departure_address" formControlName="departure_address">
+        <mat-error>
+          <span *ngIf="!loadDetail.get('departure_address').valid && loadDetail.get('departure_address').touched">
+            Please enter departure_address</span>
         </mat-error>
 
-        </mat-form-field>
+      </mat-form-field>
 
 
-    <mat-form-field class="example-full-width">
-      <input required matInput placeholder="arrival_address" formControlName="arrival_address" >
-      <mat-error>
-        <span *ngIf="!loadDetail.get('arrival_address').valid && loadDetail.get('arrival_address').touched"> Please enter arrival_address !!!</span>
-    </mat-error>
+      <mat-form-field class="example-full-width">
+        <input required matInput placeholder="arrival_address" formControlName="arrival_address">
+        <mat-error>
+          <span *ngIf="!loadDetail.get('arrival_address').valid && loadDetail.get('arrival_address').touched"> Please
+            enter arrival_address !!!</span>
+        </mat-error>
 
-    </mat-form-field>
-
-
-  <mat-form-field class="example-full-width">
-    <input required matInput placeholder="Description about material" formControlName="description" >
-    <mat-error>
-      <span *ngIf="!loadDetail.get('description').valid && loadDetail.get('description').touched"> Please enter description !!!</span>
-  </mat-error>
-
-  </mat-form-field>
-
-<mat-form-field class="example-full-width">
-  <input required matInput   type='number' placeholder="Weight in KG" formControlName="weight" >
-  <mat-error>
-    <span *ngIf="!loadDetail.get('weight').valid && loadDetail.get('weight').touched"> Please enter weight !!!</span>
-  </mat-error>
-
-</mat-form-field>
-
-<mat-form-field class="example-full-width">
-  <input required matInput  placeholder="Type of Metrail" formControlName="type" >
-  <mat-hint>Glass,Wood,etc.</mat-hint>
-  <mat-error>
-    <span *ngIf="!loadDetail.get('type').valid && loadDetail.get('type').touched"> Please enter type of matrial!</span>
-  </mat-error>
-
-</mat-form-field>
+      </mat-form-field>
 
 
-            <mat-form-field>
-                <input required matInput [min]="minDate" [matDatepicker]="picker" placeholder="Date of Shipping" formControlName="dateofdel">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker touchUi ></mat-datepicker>
-              </mat-form-field>
-              <br>
+      <mat-form-field class="example-full-width">
+        <input required matInput placeholder="Description about material" formControlName="description">
+        <mat-error>
+          <span *ngIf="!loadDetail.get('description').valid && loadDetail.get('description').touched"> Please enter
+            description !!!</span>
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input required matInput type='number' placeholder="Weight in KG" formControlName="weight">
+        <mat-error>
+          <span *ngIf="!loadDetail.get('weight').valid && loadDetail.get('weight').touched"> Please enter weight
+            !!!</span>
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input required matInput placeholder="Type of Metrail" formControlName="type">
+        <mat-hint>Glass,Wood,etc.</mat-hint>
+        <mat-error>
+          <span *ngIf="!loadDetail.get('type').valid && loadDetail.get('type').touched"> Please enter type of
+            matrial!</span>
+        </mat-error>
+
+      </mat-form-field>
+
+
+      <mat-form-field>
+        <input required matInput [min]="minDate" [matDatepicker]="picker" placeholder="Date of Shipping"
+          formControlName="dateofdel">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker touchUi></mat-datepicker>
+      </mat-form-field>
+      <br>
 
 
 
@@ -64,29 +70,26 @@
 
         <span>priority</span><br>
         <mat-radio-group class="example-radio-group" formControlName="priority">
-            <mat-radio-button    value="low">Low</mat-radio-button>
-            <mat-radio-button color="primary"  value="medium">Medium</mat-radio-button>
-            <mat-radio-button color="warn"  value="high">High</mat-radio-button>
-          </mat-radio-group>
-          <mat-error>
-            <span *ngIf="!loadDetail.get('priority').valid && loadDetail.get('priority').touched">Please select any priority !!!</span>
+          <mat-radio-button value="low">Low</mat-radio-button>
+          <mat-radio-button color="primary" value="medium">Medium</mat-radio-button>
+          <mat-radio-button color="warn" value="high">High</mat-radio-button>
+        </mat-radio-group>
+        <mat-error>
+          <span *ngIf="!loadDetail.get('priority').valid && loadDetail.get('priority').touched">Please select any
+            priority !!!</span>
         </mat-error>
 
-<br>
+        <br>
 
 
-        <button id="sbtn" type="button" mat-raised-button [disabled]="!loadDetail.valid" (click)="getValue(loadDetail.value)"  >Submit</button>
+        <button id="sbtn" type="button" mat-raised-button [disabled]="!loadDetail.valid"
+          (click)="getValue(loadDetail.value)">Submit</button>
 
 
-  </mat-card-actions>
+      </mat-card-actions>
 
 
-  </form>
-</mat-card-content>
+    </form>
+  </mat-card-content>
 
 </mat-card>
-
-
-
-
-

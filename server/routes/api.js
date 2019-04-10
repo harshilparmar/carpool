@@ -5,52 +5,55 @@ const multer = require('multer');
 const nodemailer = require("nodemailer");
 const User = require('../models/user');
 const tempOwener = require('../models/rider');
-const offerRide =  require('../models/offeredRide');
-const rideReq =  require('../models/riderequest');
-const loadReq =  require('../models/load_req');
+const offerRide = require('../models/offeredRide');
+const rideReq = require('../models/riderequest');
+const loadReq = require('../models/load_req');
 const details = require("../routes/detail.json");
 const jwt = require('jsonwebtoken');
 const path = require('path');
-mongoose.connect('mongodb://localhost:27017/carpool');
+mongoose.connect('mongodb://localhost:27017/carpool',{ useNewUrlParser: true } );
+
 var db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", function (callback) {
-    console.log("Connection succeeded.");
+  console.log("Connection succeeded.");
 });
 
 
-	//////////multer config//////////
-	var storage = multer.diskStorage({
-		destination: (req, file, cb) => {
-		  cb(null, __basedir + '/uploads/')
-		},
-		filename: (req, file, cb) => {
-		  cb(null, Date.now() + "-" + file.originalname)
-		}
-	});
-	
-	var upload = multer({storage: storage});
+//////////multer config//////////
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, __basedir + '/uploads/')
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname)
+  }
+});
+
+var upload = multer({
+  storage: storage
+});
 
 
 
 
 function verifyToken(req, res, next) {
-    if(!req.headers.authorization) {
-      return res.status(401).send('Unauthorized request')
-    }
-    let token = req.headers.authorization.split(' ')[1]
-    if(token === 'null') {
-      return res.status(401).send('Unauthorized request')    
-    }
-    let payload = jwt.verify(token, 'secret')
-    if(!payload) {
-      return res.status(401).send('Unauthorized request')    
-    }
-    req.userId = payload.subject
-    next()
+  if (!req.headers.authorization) {
+    return res.status(401).send('Unauthorized request')
   }
-  
+  let token = req.headers.authorization.split(' ')[1]
+  if (token === 'null') {
+    return res.status(401).send('Unauthorized request')
+  }
+  let payload = jwt.verify(token, 'secret')
+  if (!payload) {
+    return res.status(401).send('Unauthorized request')
+  }
+  req.userId = payload.subject
+  next()
+}
+
 
 
 
@@ -61,76 +64,82 @@ function verifyToken(req, res, next) {
 
 //Register
 
-router.post('/register',(req, res) => {
+router.post('/register', (req, res) => {
 
-            let userdata = req.body;
+  let userdata = req.body;
 
-            let user = new User(userdata);
-            user.save((error, result) => {
-                if (error) {    
-                    return console.log(error);
-                } else {
-                    let payload =  {subject : result._id };
-                    let token=  jwt.sign(payload,'secret');
+  let user = new User(userdata);
+  user.save((error, result) => {
+    if (error) {
+      return console.log(error);
+    } else {
+      let payload = {
+        subject: result._id
+      };
+      let token = jwt.sign(payload, 'secret');
 
-                    res.status(200).send({token,payload});
-                }
-            });
+      res.status(200).send({
+        token,
+        payload
+      });
+    }
+  });
 
-        });
+});
 
 
 //login 
 
 router.post('/login', (req, res) => {
-    let userdata = req.body;
+  let userdata = req.body;
 
-    User.findOne({
-        userid: userdata.userid
-    }, (err, result) => {
-        if (err) {
-            return console.log(err);
-        }
-            else {
-            if (!result) {
-                res.status(401).send('User not found!!');
-            } else {
-              result.comparePassword(userdata.password, function(err, isMatch) {
-                if (err) throw err;
-               if(isMatch != true){
-                res.status(401).send('Password is worng!!');
-               }
-               else {
-                // result.comparePassword(userdata.password, function(err, isMatch) {
-                  // if (err) throw err;
-                  let payload = { subject: result._id ,
-                                  admin : result.isAdmin 
-                                };
-                      let token = jwt.sign(payload,'secret'); 
-                      res.status(200).send({token : token,
-                                            payload });
-              
-              }
+  User.findOne({
+    userid: userdata.userid
+  }, (err, result) => {
+    if (err) {
+      return console.log(err);
+    } else {
+      if (!result) {
+        res.status(401).send('User not found!!');
+      } else {
+        result.comparePassword(userdata.password, function (err, isMatch) {
+          if (err) throw err;
+          if (isMatch != true) {
+            res.status(401).send('Password is worng!!');
+          } else {
+            // result.comparePassword(userdata.password, function(err, isMatch) {
+            // if (err) throw err;
+            let payload = {
+              subject: result._id,
+              admin: result.isAdmin
+            };
+            let token = jwt.sign(payload, 'secret');
+            res.status(200).send({
+              token: token,
+              payload
             });
-          };
-                
-        }
 
-      });
-    });
+          }
+        });
+      };
+
+    }
+
+  });
+});
 // });
 //
 
 //all ride list
-router.get('/event', async (req,res)=>{
-  try { 
+router.get('/event', async (req, res) => {
+  try {
     // let id = req.params.id;
     let ridelist = await offerRide.find();
     // console.log(userdetail.isRejected);
     res.send(ridelist);
-} catch (error) {
-  res.status(401).send(error);
-  }  
+  } catch (error) {
+    res.status(401).send(error);
+  }
 });
 
 
@@ -139,70 +148,87 @@ router.get('/event', async (req,res)=>{
 
 
 //particular ride by id
-router.get('/event/:id', async (req,res)=>{
-  try { 
+router.get('/event/:id', async (req, res) => {
+  try {
     let id = req.params.id;
     let ridelist = await offerRide.findById(id).populate('owenerID');
     // console.log(userdetail.isRejected);
     res.send(ridelist);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
-  }  
+  }
 
 
 });
 
 
 //common ride search
-router.post('/allride',async (req,res)=>{
- 
+router.post('/allride', async (req, res) => {
+
 
   try {
     let keyword = req.body.keyword;
-    let searchResult = await offerRide.find({ $text: { $search: keyword } });
+    let searchResult = await offerRide.find({
+      $text: {
+        $search: keyword
+      }
+    });
     res.send(searchResult);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
-  }    
+  }
 
 });
 
 //search particular ride based on route
 
-router.post('/search',async (req,res)=>{
- 
+router.post('/search', async (req, res) => {
+
 
   try {
     // console.log(req.body.des);
-    let source= req.body.src;
+    let source = req.body.src;
     let destination = req.body.des;
-    let searchResult = await offerRide.find({$and: [{"departing_from" : source},{ $or :[   {"arriving_at" :destination },{"waypoints": destination } ] }  ]}).collation( { locale: 'en', strength: 1 });
+    let searchResult = await offerRide.find({
+      $and: [{
+        "departing_from": source
+      }, {
+        $or: [{
+          "arriving_at": destination
+        }, {
+          "waypoints": destination
+        }]
+      }]
+    }).collation({
+      locale: 'en',
+      strength: 1
+    });
     res.send(searchResult);
-} catch (error) { 
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
-  }    
+  }
 
 });
 
 ///ride request 
-router.post('/rideRequest',async (req,res)=>{
- 
+router.post('/rideRequest', async (req, res) => {
+
 
   try {
     // console.log(req.body.des);
-    let data= req.body;
-      // console.log(data);
-    
+    let data = req.body;
+    // console.log(data);
+
     let searchResult = new rideReq(data);
     await searchResult.save();
     res.send(searchResult);
-} catch (error) { 
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
-  }    
+  }
 
 });
 
@@ -212,214 +238,260 @@ router.post('/rideRequest',async (req,res)=>{
 
 
 // varify
-router.post('/special',verifyToken,async (req,res)=>{
- 
+router.post('/special', verifyToken, async (req, res) => {
+
 
   try {
     let rideOffer = new offerRide(req.body);
     await rideOffer.save();
     res.json(rideOffer);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
-  }    
+  }
 
 });
 
 //temp owener register
 
-router.post('/owener_reg', upload.single("uploadfile"),async (req,res)=>{
-  
+router.post('/owener_reg', upload.single("uploadfile"), async (req, res) => {
 
-      try {
-        let owerdetail = {
-          userid : req.body.userid,
-          email: req.body.email,
-          licence_number:req.body.licence_number,
-          licence_date:req.body.licence_date,
-          license_photo : req.file.filename
-        };
-        let tempdetail = new tempOwener(owerdetail);
-        await tempdetail.save();
-        res.send(tempdetail);
-    } catch (error) {
-      res.status(401).send(error);
 
-      }    
+  try {
+    let owerdetail = {
+      userid: req.body.userid,
+      email: req.body.email,
+      licence_number: req.body.licence_number,
+      licence_date: req.body.licence_date,
+      license_photo: req.file.filename
+    };
+    let tempdetail = new tempOwener(owerdetail);
+    await tempdetail.save();
+    res.send(tempdetail);
+  } catch (error) {
+    res.status(401).send(error);
+
+  }
 });
 
 ///////////////////////download licence//////////////////////////
 
-router.post('/download', function(req,res,next){
-  filepath = path.join(__dirname,'../uploads') +'/'+ req.body.filename;
+router.post('/download', function (req, res, next) {
+  filepath = path.join(__dirname, '../uploads') + '/' + req.body.filename;
   res.sendFile(filepath);
 });
 
 
 
 
-// User profile (READ)
-router.get('/profile/:id',async (req,res)=>{
-  try { 
+//* User profile (READ)
+router.get('/profile/:id', async (req, res) => {
+  try {
     let id = req.params.id;
     let userdetail = await User.findById(id).populate('rides.reqid');
     // console.log(userdetail.isRejected);
     res.send(userdetail);
-} catch (error) {
-  res.status(401).send(error);
-
-  }    
-});
-
-// User profile (UPDATE)
-router.patch('/proupdate/:id',async (req,res)=>{
-  try { 
-    let id = req.params.id;
-    let data= req.body; ////////try with different approach 
-    let userdetail = await User.findByIdAndUpdate({"_id":id},data);
-      res.send(userdetail);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+});
+
+// * User profile (UPDATE)
+router.patch('/proupdate/:id', async (req, res) => {
+  try {
+    let id = req.params.id;
+    let data = req.body; ////////try with different approach 
+    let userdetail = await User.findByIdAndUpdate({
+      "_id": id
+    }, data);
+    res.send(userdetail);
+  } catch (error) {
+    res.status(401).send(error);
+
+  }
+
 });
 
 
 
 
 //////////////////ADMIN ALL PROFILE FETCH ///////////////////
-router.get('/profile',async (req,res)=>{
-  try { 
+router.get('/profile', async (req, res) => {
+  try {
 
     let userdetail = await User.find({});
     res.json(userdetail);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
 });
 
-/////////////////////////admin varifaction//////////////////////////////////////////////
+////////////////////////* admin varifaction//////////////////////////////////////////////
 
-router.get('/varifaction',async (req,res)=>{
-  try { 
+router.get('/varifaction', async (req, res) => {
+  try {
     // let id = req.params.id;
     let userdetail = await tempOwener.find({}).populate('userid');
     res.json(userdetail);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
 });
 
-//////////////////////activate user//////////////////////////
-router.patch('/active/:id',async (req,res)=>{
-  try { 
+//////////////////////* activate user//////////////////////////
+router.patch('/active/:id', async (req, res) => {
+  try {
     let id = req.params.id;
-    let data= req.body; ////////try with different approach 
-    let tempdata = await tempOwener.find({userid : id});
-    let userdetail = await User.update({"_id":id},{ $set: { "owener": true ,"ride_provider": { license_number: tempdata[0].licence_number ,license_photo : tempdata[0].license_photo  ,license_date: tempdata[0].licence_date } }});
-    let tempdelte = await tempOwener.deleteOne({"userid" : id});
-      res.send(userdetail);
-} catch (error) {
-  res.status(401).send(error);
-
-  }
-    
-});
-
-
-////////////////////Reject User////////////////////////
-
-router.delete('/reject/:id',async (req,res)=>{
-  try { 
-    let id = req.params.id;
-     await User.update({"_id":id},{ $set: { "isRejected": true }});
-    let userdetail = await tempOwener.deleteOne({"userid" : id});
+    let data = req.body; ////////!try with different approach 
+    let tempdata = await tempOwener.find({
+      userid: id
+    });
+    let userdetail = await User.update({
+      "_id": id
+    }, {
+      $set: {
+        "owener": true,
+        "ride_provider": {
+          license_number: tempdata[0].licence_number,
+          license_photo: tempdata[0].license_photo,
+          license_date: tempdata[0].licence_date
+        }
+      }
+    });
+    let tempdelte = await tempOwener.deleteOne({
+      "userid": id
+    });
     res.send(userdetail);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
+});
+
+
+////////////////////* Reject User////////////////////////
+
+router.delete('/reject/:id', async (req, res) => {
+  try {
+    let id = req.params.id;
+    await User.update({
+      "_id": id
+    }, {
+      $set: {
+        "isRejected": true
+      }
+    });
+    let userdetail = await tempOwener.deleteOne({
+      "userid": id
+    });
+    res.send(userdetail);
+  } catch (error) {
+    res.status(401).send(error);
+
+  }
+
 });
 
 
 
-/////////////////////COUNTING THE NUMBER OF DOC//////////////////////////
+////////////////////*COUNTING THE NUMBER OF DOC//////////////////////////
 
-router.get('/documentcount',async (req,res)=>{
-  try { 
+router.get('/documentcount', async (req, res) => {
+  try {
     let id = req.params.id;
     let userdetail = await tempOwener.count();
-    res.send({totalRec : userdetail});
-} catch (error) {
-  res.status(401).send(error);
+    res.send({
+      totalRec: userdetail
+    });
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
 });
 
 
 
-//// Ride requests
+//* Ride requests
 
 
-router.post('/rideconfirmation',async (req,res)=>{
-  try { 
+router.post('/rideconfirmation', async (req, res) => {
+  try {
     let owenerID = req.body.owenerID;
-     let response = {};
-    let rideRequest = await rideReq.find({"owenerId" : owenerID }).populate('userid').populate('rideid');
+    let response = {};
+    let rideRequest = await rideReq.find({
+      "owenerId": owenerID
+    }).populate('userid').populate('rideid');
     res.json(rideRequest);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
 });
 
 
 
 //accept request 
 
-router.post('/riderActive',async (req,res)=>{
-  try { 
+router.post('/riderActive', async (req, res) => {
+  try {
     let userId = req.body.userID;
     let rideID = req.body.rideID;
     console.log(rideID);
     // let owenerID = req.body.owenerID;
     //  let response = {};
-    let rideRequest = await offerRide.findByIdAndUpdate(rideID,{$inc: {number_sits: -1},$push :{rider : { userID: userId } }  });
-    await User.findByIdAndUpdate(userId,{$push :{rides : { rideID: rideID}}});
-    let deleteRequst =  await rideReq.findOneAndDelete({rideid : rideID});
-      // ,$push: { rider: rideID }},{
-      //   upsert: true,
-      //   new: true
-      // }
+    let rideRequest = await offerRide.findByIdAndUpdate(rideID, {
+      $inc: {
+        number_sits: -1
+      },
+      $push: {
+        rider: {
+          userID: userId
+        }
+      }
+    });
+    await User.findByIdAndUpdate(userId, {
+      $push: {
+        rides: {
+          rideID: rideID
+        }
+      }
+    });
+    let deleteRequst = await rideReq.findOneAndDelete({
+      rideid: rideID
+    });
+    // ,$push: { rider: rideID }},{
+    //   upsert: true,
+    //   new: true
+    // }
     res.send(deleteRequst);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
 });
 
 ////ride cancle
 
 
-router.delete('/riderdeactive/:id',async (req,res)=>{
-  try { 
+router.delete('/riderdeactive/:id', async (req, res) => {
+  try {
     let id = req.params.id;
     let userdetail = await rideReq.findByIdAndDelete(id);
     res.send(userdetail);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
 });
 
 
@@ -428,53 +500,67 @@ router.delete('/riderdeactive/:id',async (req,res)=>{
 ///user   rides
 
 
-router.get('/user_rides/:id',async (req,res)=>{
-  try { 
-    let id = req.params.id; ///////owener id populate is left rides.rideID
-    let userdetail = await User.findById(id).populate('loadtransport.shippedBy loadtransport.reqid').populate({path:'rides.rideID'});
-    res.send(userdetail);
-} catch (error) {
-  res.status(401).send(error);
+router.get('/user_rides/:id', async (req, res) => {
+  try {
+    let id = req.params.id; // todo owener id populate is left => rides.rideID && transportByme.reqid.userid
+    let userdetail = await User.findById(id).populate('loadtransport.shippedBy loadtransport.reqid').populate({
+      path: 'rides.rideID'
+    }).populate('transportByme.reqid').exec(function(err, docs) {
+
+      var options = {
+        path: 'transportByme.reqid.userid'
+      };
+  
+      if (err) return res.json(500);
+       User.populate(docs, options, function (err, projects) {
+        res.send(projects);
+      });
+    });
+    // res.send(userdetail);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
 });
 
 
 ///// ride Detail ridedetail
 
 
-router.get('/ridedetail/:rideid',async (req,res)=>{
-  try { 
+router.get('/ridedetail/:rideid', async (req, res) => {
+  try {
     let id = req.params.rideid;
     let rideDetail = await offerRide.findById(id);
     res.send(rideDetail);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
 });
-  
+
 //// owener Ride Details
 
-router.get('/owenerRides/:id',async (req,res)=>{
-  try { 
+router.get('/owenerRides/:id', async (req, res) => {
+  try {
     let id = req.params.id;
-    let rideDetail = await offerRide.find({owenerID : id}).populate('rider.userID');
+    let rideDetail = await offerRide.find({
+      owenerID: id
+    }).populate('rider.userID');
     res.send(rideDetail);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
   }
-    
+
 });
 
 
 ///////////////loading data detail/////////////////////
 
 
-router.post('/loadreg',async (req,res)=>{
-  
+router.post('/loadreg', async (req, res) => {
+
 
   try {
     let userdata = req.body;
@@ -482,10 +568,10 @@ router.post('/loadreg',async (req,res)=>{
     let loadreg = new loadReq(userdata);
     await loadreg.save();
     res.send(loadreg);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
-  }    
+  }
 });
 
 
@@ -493,51 +579,66 @@ router.post('/loadreg',async (req,res)=>{
 //////////send all load request/////
 
 
-router.get('/allLoadReq',async (req,res)=>{
-  try { 
+router.get('/allLoadReq', async (req, res) => {
+  try {
     // let id = req.params.id;
     let rideDetail = await loadReq.find({}).populate('userid');
     res.send(rideDetail);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
   }
-    
+
 });
 
 ///accept and decline 
-router.post('/loadaccept',async (req,res)=>{
-  try { 
+router.post('/loadaccept', async (req, res) => {
+  try {
     let userId = req.body.userID;
-    let shippedID = req.body.shippedID; 
+    let shippedID = req.body.shippedID;
     let reqId = req.body.loadreqID;
     console.log(reqId);
-  
-    
-    await User.findByIdAndUpdate(userId,{$push :{loadtransport : { reqid: reqId , shippedBy : shippedID}}});
-   await User.findByIdAndUpdate(shippedID,{$push :{transportByme : { reqid: reqId }}});
-    let done = await loadReq.findByIdAndUpdate(reqId, { isConfirm: true } );
 
-      
+
+    await User.findByIdAndUpdate(userId, {
+      $push: {
+        loadtransport: {
+          reqid: reqId,
+          shippedBy: shippedID
+        }
+      }
+    });
+    await User.findByIdAndUpdate(shippedID, {
+      $push: {
+        transportByme: {
+          reqid: reqId
+        }
+      }
+    });
+    let done = await loadReq.findByIdAndUpdate(reqId, {
+      isConfirm: true
+    });
+
+
     res.send(done);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
 });
 
 
 
-router.delete('/loadreject/:id',async (req,res)=>{
-  try { 
+router.delete('/loadreject/:id', async (req, res) => {
+  try {
     let id = req.params.id;
     let userdetail = await loadReq.findByIdAndDelete(id);
     res.send(userdetail);
-} catch (error) {
-  res.status(401).send(error);
+  } catch (error) {
+    res.status(401).send(error);
 
   }
-    
+
 });
 
 //////load approval request accept
@@ -551,7 +652,7 @@ router.delete('/loadreject/:id',async (req,res)=>{
 // } catch (error) {
 //   res.status(401).send(error);
 //   }
-    
+
 // });
 
 //////////////.........Email..../////////////
