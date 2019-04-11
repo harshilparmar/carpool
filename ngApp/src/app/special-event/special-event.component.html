@@ -6,7 +6,7 @@
 
 
 <div class="row mt-5" [class.mat-elevation-z8]="true" style="padding: 30px;">
-  <form [formGroup]="offerRide" (ngSubmit)="onFormSubmit(offerRide.value)">
+  <form [formGroup]="offerRide" >
 
     <mat-form-field class="input-field">
       <input required matInput formControlName="departing_from" placeholder="Your departure City">
@@ -108,7 +108,7 @@
     <!-- </div> -->
   <!-- </div> -->
 <br>
-    <button type="submit" id="btn" mat-raised-button color="" style="padding: 12px 24px; font-size: 20px;">Submit</button>
+    <button type="button" id="btn" mat-raised-button  style="padding: 12px 24px; font-size: 20px;" (click)="onFormSubmit(offerRide.value)" >Submit</button>
 
     <br><br>
   </form>

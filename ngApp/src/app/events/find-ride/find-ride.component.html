@@ -17,10 +17,10 @@
 
 <div >
 
-<div class="row mt-5">
+<div class="row mt-5" >
     <div class="col-md-4 mb-3" *ngFor="let list of searchedResult">
       <div *ngIf="list.departing_date >= today" class="card text-center">
-        <div class="card-body">
+        <div class="card-body" style="padding: 30px;">
           <h5 class="card-title">{{list.departing_from}}</h5>
           <mat-icon>near_me</mat-icon>
           <h6 class="card-text">{{list.arriving_at}}</h6>

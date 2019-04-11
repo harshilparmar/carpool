@@ -83,6 +83,9 @@ export class SpecialEventComponent implements OnInit {
       duration: 1500,
     });
 
+    this.offerRide.reset();
+    this.offerRide.markAsPristine();
+    this.offerRide.markAsUntouched();
 
     // let convert = new Date(value.departuredate,36);
     // console.log(formData.values());
