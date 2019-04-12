@@ -139,24 +139,29 @@
   </mat-tab>
 
   <mat-tab *ngIf="userDetail.owener" label="Request to approve ">
-    <!-- ! complete this
-       {{rideReq | json}} -->
-    <mat-card *ngIf="userRides.length != null ; else NoReq">
+    <!-- ! complete this -->
+    <!-- {{userRides | json}} -->
+       <!-- {{rideReq | json}} -->
+      <div *ngIf="rideReq.length != 0;else nothingtoapp">
+
 
       <div *ngFor="let req of rideReq">
+          <mat-card>
         <li>Userid : <span> {{req.userid.first_name}}</span> </li> <br>
 
         <!-- <p>for</p> -->
-        <li>Ride : {{req.rideid._id}}</li>
+        <li>Ride : {{req.rideid.departing_from}} to {{req.rideid.arriving_at}} </li>
+        <li> {{req.rideid.departing_date | date}} {{req.rideid.departure_time}} </li>
         <button mat-raised-button color="primary" (click)="accept(req.userid._id,req.rideid._id)">Accept</button>&nbsp;
         <button mat-raised-button color="warn" (click)="reject(req._id)">Reject</button>
+      </mat-card>
       </div>
 
-    </mat-card>
-    <ng-template #NoReq>
-      <p class="mat-display-1">No req!!</p>
-    </ng-template>
 
+  </div>
+   <ng-template #nothingtoapp>
+     <p class="mat-display-1">No Request to Approve</p>
+   </ng-template>
 
 
   </mat-tab>
@@ -280,7 +285,7 @@
 
     <!-- {{ loadReq | json }} -->
     <div *ngFor="let req of loadReq">
-      <div *ngIf="req.isConfirm != true"> <!--todo ;else Noloadreq-->
+      <div *ngIf="req.isConfirm != true" > <!--todo ;else Noloadreq-->
         <mat-card style="background:  whitesmoke">
 
           <h3> <span> {{req.departure_address | uppercase}} <mat-icon>arrow_forward</mat-icon>
@@ -304,7 +309,10 @@
       </div>
     </div>
     <!-- todo No load Request -->
-    <!-- <ng-template #Noloadreq>No req</ng-template> -->
+    <!-- <ng-template #Noloadreq>
+      <p>No Request</p>
+
+      </ng-template> -->
 
   </mat-tab>
 

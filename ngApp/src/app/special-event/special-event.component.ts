@@ -27,7 +27,7 @@ export class SpecialEventComponent implements OnInit {
                 arriving_at : [null,Validators.required],
                 departing_date: [null,Validators.required],
                 departure_time: [null,Validators.required],
-                waypoints : [null,Validators.required],
+                waypoints : [null],
                 roundtrip : [false,Validators.required],
                 returndate : [null,Validators.required],
                 returntime : [null,Validators.required],

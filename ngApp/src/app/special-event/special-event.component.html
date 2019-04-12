@@ -33,7 +33,7 @@
     </mat-form-field>
     <br>
     <mat-form-field class="input-field">
-        <input required matInput formControlName="waypoints" placeholder="Way Points">
+        <input  matInput formControlName="waypoints" placeholder="Way Points">
         <mat-error>
             <span *ngIf="!offerRide.get('waypoints').valid && offerRide.get('waypoints').touched"> Please enter Waypoints City !!!</span>
         </mat-error>

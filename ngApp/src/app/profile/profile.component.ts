@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   owenerRides : any = {};
   loadReq : any = {};
   loadReqaccepted : any = {};
+  no_loadreq : boolean =  false;
   constructor(private profileservice: UserprofileService,
               private fb: FormBuilder,
               private routing: Router ) { }
