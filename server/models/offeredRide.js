@@ -24,8 +24,7 @@ let offeredrideSchema = new schema({
         enum: ['car', 'bike']
     },
     vehicle_number: {
-        type: String,
-        unique: true
+        type: String
     },
     rider:[{
         userID :  { type: mongoose.Schema.Types.ObjectId, ref: 'carpool' }

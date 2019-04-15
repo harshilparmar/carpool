@@ -35,10 +35,10 @@
 
     <mat-card-footer>
         <div *ngIf="(rideDetail.number_sits <= 0) || (rideDetail.departing_date <= today) ;else btnride" >
-        <button style="margin-left: 350px;margin-bottom: 10px;" mat-raised-button color="primary" [disabled]="true" (click)="bookRide(rideDetail.owenerID,rideDetail._id)">Book ride</button>
+        <button style="margin-left: 20px;margin-bottom: 10px;" mat-raised-button color="primary" [disabled]="true" (click)="bookRide(rideDetail.owenerID,rideDetail._id)">Book ride</button>
          </div>
          <ng-template #btnride>
-         <button style="margin-left: 350px;margin-bottom: 10px;" mat-raised-button color="primary" [disabled]="false" (click)="bookRide(rideDetail.owenerID,rideDetail._id)">Book ride</button>
+         <button style="margin-left: 20px;margin-bottom: 10px;" mat-raised-button color="primary" [disabled]="false" (click)="bookRide(rideDetail.owenerID,rideDetail._id)">Book ride</button>
          </ng-template>
         </mat-card-footer>
 

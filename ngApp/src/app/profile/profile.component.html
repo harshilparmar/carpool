@@ -22,10 +22,12 @@
     <style>
       mat-card {
         margin: 10px 0;
+        /* color: whitesmoke; */
+        background: whitesmoke;
       }
 
     </style>
-    <mat-card>
+    <mat-card >
       <span>Name </span>
       <h3>{{ userDetail.first_name  | titlecase}}</h3>
 
@@ -62,12 +64,6 @@
 
 
     </mat-card>
-
-
-    <!-- FirstName :  <h2> {{ userDetail.first_name | uppercase }}</h2>
-    LastName : <h2>{{ userDetail.last_name | uppercase }}</h2>
-    UseId: <h2> {{ userDetail.userid }}</h2>
-    Email : <h2>{{ userDetail.email }}</h2> -->
 
   </mat-tab>
   <mat-tab label="Update Profile">
@@ -142,16 +138,17 @@
     <!-- ! complete this -->
     <!-- {{userRides | json}} -->
        <!-- {{rideReq | json}} -->
-      <div *ngIf="rideReq.length != 0;else nothingtoapp">
+      <div *ngIf="rideReq.length > 0;else nothingtoapp">
 
 
       <div *ngFor="let req of rideReq">
-          <mat-card>
-        <li>Userid : <span> {{req.userid.first_name}}</span> </li> <br>
-
-        <!-- <p>for</p> -->
+          <mat-card style="background: whitesmoke">
+          <p>
+              {{req.userid.first_name | titlecase}} wants to ride with you from {{req.rideid.departing_from | uppercase}} to {{req.rideid.arriving_at | uppercase}} on {{req.rideid.departing_date | date}} {{req.rideid.departure_time}}
+          </p>
+        <!-- <li>Userid : <span> {{req.userid.first_name}}</span> </li> <br>
         <li>Ride : {{req.rideid.departing_from}} to {{req.rideid.arriving_at}} </li>
-        <li> {{req.rideid.departing_date | date}} {{req.rideid.departure_time}} </li>
+        <li> {{req.rideid.departing_date | date}} {{req.rideid.departure_time}} </li> -->
         <button mat-raised-button color="primary" (click)="accept(req.userid._id,req.rideid._id)">Accept</button>&nbsp;
         <button mat-raised-button color="warn" (click)="reject(req._id)">Reject</button>
       </mat-card>
@@ -170,22 +167,21 @@
 
     <!-- {{owenerRides | json}} -->
     <!-- ! color #EBF6FD -->
-
+    <div *ngIf="owenerRides.length > 0;else NotRegride">
     <mat-card style="background:whitesmoke" class="tp-card" *ngFor="let ride of owenerRides">
 
       <mat-card-header>
-        <mat-card-title>{{ ride.departing_from }} <mat-icon>near_me</mat-icon> {{ ride.arriving_at }} </mat-card-title>
+        <mat-card-title>{{ ride.departing_from | titlecase }} <mat-icon>near_me</mat-icon>  {{ ride.arriving_at | titlecase }} </mat-card-title>
         <mat-card-subtitle> {{ ride.departing_date | date}} &nbsp; {{ ride.departure_time  }} </mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
-        <p>Your journey is starts from {{ ride.source_faddress | titlecase }} to {{ ride.des_faddress | titlecase }}
+        <p>Your journey is starts from {{ ride.source_faddress  }} to {{ ride.des_faddress  }}
           via {{ ride.waypoints | titlecase }} on {{ ride.vehicle_type | titlecase }} with <span
             *ngFor="let riders of ride.rider">
-            {{riders.userID.first_name | titlecase }} {{riders.userID.last_name | titlecase }} . </span>You are
-          providing {{ ride.number_sits  }} number of seats. <span *ngIf="ride.returndate && ride.returndate">You are
-            returning to {{ ride.returndate }} on {{ ride.returntime }}</span>
-          <span *ngIf="ride.preferences.Smoking != true">Smoking Is not allowed with you</span>
+            {{riders.userID.first_name | titlecase }} {{riders.userID.last_name | titlecase }} . </span> <span *ngIf="ride.returndate && ride.returndate">You are
+            returning to {{ ride.returndate | date }} on {{ ride.returntime }}.</span>
+          <span *ngIf="ride.preferences.Smoking != true"> Smoking Is not allowed with you</span>
         </p>
 
         <!-- chattiness <li>{{ ride.preferences.chattiness }}</li>
@@ -196,91 +192,65 @@
       </mat-card-content>
 
     </mat-card>
-
-
-
-
-
-
-
-
-
-
-    <!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-      <mat-button-toggle value="upcoming" (click)="showRides()">upcoming</mat-button-toggle>
-      <mat-button-toggle value="past" (click)="showRides()"> past</mat-button-toggle>
-
-    </mat-button-toggle-group> -->
-
+  </div>
+  <ng-template #NotRegride>
+    <p>Not Register Ride Yet!</p>
+  </ng-template>
   </mat-tab>
 
 
 
-  <mat-tab label="Bookings">
+  <mat-tab label="Bookings History">
 
     <!-- {{userRides | json}} -->
-    <div *ngIf="userRides.length != null ; else NoBook">
-      <!-- {{ ridedetail | json}} -->
+    <div *ngIf="userRides.rides.length > 0 ; else NoBook">
 
-      <ul>
+      <div *ngFor="let book of userRides.rides">
+        <mat-card style="background: whitesmoke">
+            <mat-card-header>
+                <mat-card-title>{{ book.rideID.departing_from | titlecase }} <mat-icon>arrow_forward
+                  </mat-icon> {{ book.rideID.arriving_at | titlecase }} via lkjl </mat-card-title>
+                <mat-card-subtitle> {{ book.rideID.departing_date | date}} &nbsp; {{ book.rideID.departure_time  }} </mat-card-subtitle>
+              </mat-card-header>
+
+          <ul>
+
         <li>
-          form: {{userRides.rides[0].rideID.departing_from }}
+          Waypoints: {{book.rideID.waypoints | titlecase}}
 
+        </li>
+
+        <li *ngIf="book.rideID.returndate || book.rideID.returntime">
+          Return date: {{book.rideID.returndate | date}}
+           {{book.rideID.returntime}}
         </li>
         <li>
-          To: {{userRides.rides[0].rideID.arriving_at }}
-
+          Vehicle Type: {{book.rideID.vehicle_type | titlecase}}
+          ({{book.rideID.vehicle_number}})
         </li>
         <li>
-          Date: {{userRides.rides[0].rideID.departing_date | date }}
-
-        </li>
-        <li>
-          Time : {{userRides.rides[0].rideID.departure_time }}
-
-        </li>
-        <li>
-          Waypoints: {{userRides.rides[0].rideID.waypoints}}
-
-        </li>
-        <li *ngIf="ridedetail.returndate">
-          Return date: {{ridedetail.returndate}}
-
-        </li>
-        <li *ngIf="ridedetail.returntime">
-          Return Time: {{ridedetail.returntime}}
+          Source Address: {{book.rideID.source_faddress}}
 
         </li>
         <li>
-          Vehicle Type: {{userRides.rides[0].rideID.vehicle_type}}
+          Destination Address: {{book.rideID.des_faddress}}
 
         </li>
         <li>
-          Vehicle Number: {{userRides.rides[0].rideID.vehicle_number}}
-
-        </li>
-        <li>
-          Source Address: {{userRides.rides[0].rideID.source_faddress}}
-
-        </li>
-        <li>
-          Destination Address: {{userRides.rides[0].rideID.des_faddress}}
-
-        </li>
-        <li>
-          Provided By: {{userRides.rides[0].rideID.des_faddress}}
-
+            <!-- email phone last_name -->
+          Provided By: {{book.rideID.owenerID.first_name | titlecase}} {{book.rideID.owenerID.last_name | titlecase}}
+          (Contact No: {{book.rideID.owenerID.phone }})
         </li>
       </ul>
-
+    </mat-card>
+    </div>
     </div>
     <ng-template #NoBook>
       <p class="mat-display-1">No Booking !!</p>
     </ng-template>
 
-
-
   </mat-tab>
+
   <mat-tab *ngIf="userDetail.owener" label="Load Transport Request to Approve">
 
     <!-- {{ loadReq | json }} -->
@@ -317,17 +287,18 @@
   </mat-tab>
 
   <mat-tab *ngIf="userDetail.owener" label="Load to transport">
-    <mat-card style="background: whitesmoke">
-      <!-- {{ userRides | json}} -->
+
+      <!-- todo else is missing
+         {{ userRides | json}} -->
 
       <div *ngFor="let load of userRides.transportByme ">
-
+        <mat-card style="background: whitesmoke">
         <p> Confirmed  loading request for {{load.reqid.departure_address}} to {{load.reqid.arrival_address }} on
           {{load.reqid.dateofdel | date}} by you  for {{load.reqid.userid.first_name | titlecase}} {{load.reqid.userid.last_name | titlecase}} </p>
           <p>Contact detail : <br> Email: {{load.reqid.userid.email}} <br>Phone : {{load.reqid.userid.phone}}</p>
-
+        </mat-card>
       </div>
-    </mat-card>
+
 
 
   </mat-tab>
@@ -335,10 +306,12 @@
 
   <mat-tab *ngIf="!userDetail.owener" label="Load Request Approved">
 
-    <div *ngIf="userRides.loadtrasport != null;else Noreqapprove" >
+  <!-- {{userRides | json }} -->
+    <div *ngIf="userRides.loadtrasport != 0;else Noreqapprove" >
+
       <div *ngFor="let load of userRides.loadtransport ">
 
-        <mat-card >
+        <mat-card  style="background: whitesmoke">
         <p>Your loading request for {{load.reqid.departure_address}} to {{load.reqid.arrival_address }} on
           {{load.reqid.dateofdel | date}} is confiremed </p>
         <p>by {{load.shippedBy.first_name}} {{load.shippedBy.last_name}} </p>

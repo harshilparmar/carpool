@@ -112,7 +112,7 @@ loadacceptride(obj){
 
 loadrejectRide(id){
   return this.http.delete(`${this._loadreject}/${id}`);  /////api
-}
+ }
 
 // loadAcceptDetail(){
 //   return this.http.get(`${this._userDetail}/${localStorage.getItem('userID')}`);

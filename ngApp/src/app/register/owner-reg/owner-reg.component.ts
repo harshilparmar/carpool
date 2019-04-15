@@ -10,6 +10,8 @@ import { UserprofileService } from "../../common/service/userprofile.service";
 export class OwnerRegComponent implements OnInit {
 
   UserImageFile : File;
+  maxDate = new Date();
+
   @ViewChild('uploadoc') user_image;
 
   constructor(private _formBuilder: FormBuilder,

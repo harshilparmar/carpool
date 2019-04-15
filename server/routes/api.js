@@ -508,7 +508,7 @@ router.get('/user_rides/:id', async (req, res) => {
     }).populate('transportByme.reqid').exec(function(err, docs) {
 
       var options = {
-        path: 'transportByme.reqid.userid'
+        path: 'transportByme.reqid.userid rides.rideID.owenerID'
       };
   
       if (err) return res.json(500);
