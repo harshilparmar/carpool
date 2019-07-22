@@ -8,15 +8,18 @@ import { UserprofileService } from "./common/service/userprofile.service";
 })
 export class AppComponent implements OnInit {
   title = "ngApp";
-  // isAdmin  : Boolean = (localStorage.getItem('isAdmin') == "true");
+  islocation  : Boolean = (sessionStorage.getItem('location') == "true");
 
-
+  onMappage : boolean ;
   constructor(
     private _authService: AuthServiceService,
     private _userService: UserprofileService
   ) {}
 
   ngOnInit() {
-
+    // this.onMappage = this._userService.mapage;
+    // console.log(this.onMappage);
+    //todo make function which check changes
   }
+
 }

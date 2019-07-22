@@ -12,7 +12,7 @@ import {FormControl} from '@angular/forms';
 export class CommonSearchComponent implements OnInit {
   myControl = new FormControl();
 
-  searchResult : object;
+  searchResult :any = [];
   now : Date = new Date();
   today: string = this.now.toISOString();
 
@@ -27,6 +27,7 @@ export class CommonSearchComponent implements OnInit {
         startWith(''),
         map(value => this._filter(value))
       );
+      console.log(this.now);
   }
 
   private _filter(value: string): string[] {
@@ -39,11 +40,18 @@ export class CommonSearchComponent implements OnInit {
     // console.log(keyword.value);
     let obj = { keyword : keyword.value}
     this.service.commonRideSearch(obj)
-    .subscribe(
-      data => this.searchResult = data,
-      err => console.log(err)
-    );
+    .subscribe((res)=>{
+          this.searchResult = res;
+          // console.log(this.searchResult[0]);
+    });
+
 }
+  getFlag(arg){
+    //console.log(arg);
+    //console.log(new Date(arg).toLocaleDateString() >= new Date(this.today).toLocaleDateString());
+    return (new Date(arg).toLocaleDateString() >= new Date(this.today).toLocaleDateString());
+
+  }
 
   }
 

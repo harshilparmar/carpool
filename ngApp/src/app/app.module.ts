@@ -46,7 +46,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { EventService } from './common/service/event.service';
 import { UserprofileService } from './common/service/userprofile.service';
 import { AdminService } from './common/service/admin.service';
-import { NavigationComponent } from './navigation/navigation.component';
 // import { VarifyComponent } from './admin/varify/varify.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { WaitComponent } from './special-event/wait/wait.component';
@@ -72,8 +71,6 @@ import { MapComponent } from './map/map.component';
     // AdminComponent,
     OwnerRegComponent,
     ProfileComponent,
-    NavigationComponent,
-    // VarifyComponent,
     WaitComponent,
     RejectedComponent,
     FindRideComponent,

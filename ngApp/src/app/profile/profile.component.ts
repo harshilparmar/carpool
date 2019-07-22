@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,OnDestroy} from '@angular/core';
 import { UserprofileService } from '../common/service/userprofile.service';
 import { Validators, FormBuilder } from '@angular/forms';
 import { UserDetail } from '../common/model/user_reg';
 import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit,OnDestroy {
   // pandingReq
   userDetail : any = {};
   rideReq  : any ;
@@ -21,6 +20,7 @@ export class ProfileComponent implements OnInit {
   loadReq : any = {};
   loadReqaccepted : any = {};
   no_loadreq : boolean =  false;
+  profile : any;
   constructor(private profileservice: UserprofileService,
               private fb: FormBuilder,
               private routing: Router ) { }
@@ -47,7 +47,7 @@ export class ProfileComponent implements OnInit {
 }
 
   refreshData(){
-    this.profileservice.getProfile(localStorage.getItem('userID')).subscribe((res : UserDetail)=>{
+    this.profile = this.profileservice.getProfile(localStorage.getItem('userID')).subscribe((res : UserDetail)=>{
       this.userDetail = res;
       this.updateForm.patchValue({
         first_name: res.first_name,
@@ -179,5 +179,12 @@ this.profileservice.loadDetail().subscribe((res)=>{
   // showRides(){
   //   this.toggle = !this.toggle;
   // }
+
+  ngOnDestroy(){
+
+    this.profile.unsubscribe();
+
+
+  }
 
 }

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  map_api : '********'
+  map_api : 'pk.eyJ1IjoiaGFyc2hpbHBhcm1hciIsImEiOiJjanJpdmRkZHQwNWltNDNxdW5lendkdzJrIn0.CsgfvzrMISssK1RppZauwA'
 };
 
 /*

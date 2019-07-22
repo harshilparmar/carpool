@@ -11,7 +11,7 @@ export class OwnerRegComponent implements OnInit {
 
   UserImageFile : File;
   maxDate = new Date();
-
+  owenerService : any;
   @ViewChild('uploadoc') user_image;
 
   constructor(private _formBuilder: FormBuilder,
@@ -53,7 +53,7 @@ export class OwnerRegComponent implements OnInit {
 
     // console.log(formData.getAll());
 
-    this.service.tempregister(formData).subscribe((res)=>{
+    this.owenerService = this.service.tempregister(formData).subscribe((res)=>{
       console.log(res);
       this.routing.navigate(['/special']);
     },
@@ -63,4 +63,6 @@ export class OwnerRegComponent implements OnInit {
 
   }
 
+
 }
+

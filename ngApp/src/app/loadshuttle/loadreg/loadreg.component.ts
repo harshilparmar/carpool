@@ -1,16 +1,18 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit,ViewChild, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { LoadService } from 'src/app/common/service/load.service';
 import { MatSnackBar } from '@angular/material';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-loadreg',
   templateUrl: './loadreg.component.html',
   styleUrls: ['./loadreg.component.css']
 })
-export class LoadregComponent implements OnInit {
+export class LoadregComponent implements OnInit,OnDestroy {
   @ViewChild('myform') formValues; // Added this
   minDate = new Date();
+  loadSub : Subscription;
   constructor(private _formBuilder :  FormBuilder,
               private loadservice : LoadService,
               private snackBar: MatSnackBar) { }
@@ -32,7 +34,7 @@ export class LoadregComponent implements OnInit {
 
     data.userid = localStorage.getItem('userID');
 
-    this.loadservice.loadregister(data).subscribe((res)=>{
+    this.loadSub = this.loadservice.loadregister(data).subscribe((res)=>{
 
       this.snackBar.open('Request is sent!','OK', {
         duration: 1500,
@@ -47,6 +49,10 @@ export class LoadregComponent implements OnInit {
 
   }
 
+
+  ngOnDestroy(){
+    // console.log(this.loadSub.closed)
+  }
 
 
 }

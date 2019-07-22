@@ -1,6 +1,7 @@
 <mat-card>
   <h3 [matBadge]="recordCount" matBadgeColor="warn">Pending varification </h3>
   <!-- {{ userprofile | json  }} -->
+  <div *ngIf="userprofile.length != 0">
   <div  *ngFor="let item of userprofile">
     <!-- <p>{{ item.userid | json }}<p> -->
         <h5>{{ item.userid.first_name  | titlecase}} {{ item.userid.last_name | titlecase }}  want to be Ride provider</h5>
@@ -14,6 +15,6 @@
                             <button type="button" style="margin: 50px;" (click)="accept(item.userid._id)" mat-raised-button color="primary">Accept</button>
                             <button type="button" (click)="reject(item.userid._id)" mat-raised-button color="warn">Reject</button>
   </div>
-
+</div>
 
 </mat-card>

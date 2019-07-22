@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean
     {
+      // todo val is not used
     let val = this.service.loggedIn();
     let validOwener = this.userService.offerRideCheck();  //carowener true of false
     //rejected by admin
@@ -38,6 +39,10 @@ export class AuthGuard implements CanActivate {
               return true;}
               else if(state.url.indexOf('admin')!=-1){
               return true;}
+              else if(state.url.indexOf('currentlocation')!=-1){
+                this.userService.mapage =  true;
+                sessionStorage.setItem('location','true');
+                return true;}
       }
 
       else{

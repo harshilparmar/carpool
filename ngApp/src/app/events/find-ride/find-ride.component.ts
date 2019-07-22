@@ -36,6 +36,13 @@ export class FindRideComponent implements OnInit {
 }
 
 
+getFlag(arg){
+  //console.log(arg);
+  //console.log(new Date(arg).toLocaleDateString() >= new Date(this.today).toLocaleDateString());
+  return (new Date(arg).toLocaleDateString() >= new Date(this.today).toLocaleDateString());
+
+}
+
 
 
 

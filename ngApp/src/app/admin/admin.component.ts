@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { AdminService } from '../common/service/admin.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit,OnDestroy {
   panelOpenState = false;
-
+  adminSub : Subscription;
   userprofile : any = [{}];
   constructor(private adminService : AdminService) { }
 
@@ -22,7 +23,7 @@ export class AdminComponent implements OnInit {
 
   refreshData(){
 
-    this.adminService.allProfile().subscribe((res)=>{
+    this.adminSub = this.adminService.allProfile().subscribe((res)=>{
       this.userprofile = res;
       // console.log(this.userprofile);
     },
@@ -31,5 +32,13 @@ export class AdminComponent implements OnInit {
     }
     );
   }
+
+
+  ngOnDestroy(){
+    console.log(this.adminSub.closed);
+    this.adminSub.unsubscribe();
+  }
+
+
 
 }

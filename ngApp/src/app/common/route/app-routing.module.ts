@@ -45,11 +45,7 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren : '../../admin/admin.module#AdminModule',
-    // component: AdminComponent,
-    // children:[{
-    //     path:'varify',component:VarifyComponent
-    // }],
-    canActivate : [AuthGuard]
+    // canActivate : [AuthGuard]
 
   },
   {
@@ -72,7 +68,8 @@ const routes: Routes = [
   },
   {
     path: 'currentlocation',
-    component: MapComponent
+    component: MapComponent,
+    canActivate : [AuthGuard]
   },
   {
     path: 'response',

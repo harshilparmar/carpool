@@ -203,7 +203,7 @@
   <mat-tab label="Bookings History">
 
     <!-- {{userRides | json}} -->
-    <div *ngIf="userRides.rides.length > 0 ; else NoBook">
+    <div *ngIf="userRides.rides && (userRides.rides.length > 0 ); else NoBook">
 
       <div *ngFor="let book of userRides.rides">
         <mat-card style="background: whitesmoke">
@@ -252,9 +252,9 @@
   </mat-tab>
 
   <mat-tab *ngIf="userDetail.owener" label="Load Transport Request to Approve">
-
+<!-- ! make some condition -->
     <!-- {{ loadReq | json }} -->
-    <div *ngFor="let req of loadReq">
+    <div *ngFor="let req of  loadReq">
       <div *ngIf="req.isConfirm != true" > <!--todo ;else Noloadreq-->
         <mat-card style="background:  whitesmoke">
 

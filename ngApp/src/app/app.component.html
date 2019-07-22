@@ -1,6 +1,7 @@
 <!-- <div><app-navigation></app-navigation></div> -->
-<!-- *ngIf="!isAdmin" -->
-<div >
+
+<!-- *ngIf="onMappage == false" -->
+<div *ngIf="!islocation" >
 <nav  class="navbar navbar-expand-lg navbar-dark bg-dark"  >
   <a class="navbar-brand" routerLink="/events">Carpool</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +30,7 @@
   </div>
 </nav>
 </div>
+
 <div class="container">
   <router-outlet></router-outlet>
 </div>

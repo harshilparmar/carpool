@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import * as mapboxgl from "mapbox-gl";
 import { environment } from "src/environments/environment";
 import { ActivatedRoute } from "@angular/router";
@@ -9,9 +9,9 @@ import { UserprofileService } from "../common/service/userprofile.service";
   templateUrl: "./map.component.html",
   styleUrls: ["./map.component.css"]
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit,OnDestroy {
   map: mapboxgl.Map;
-
+  secondEmail : string;
   style = "mapbox://styles/mapbox/outdoors-v9";
   lat = 37.75;
   lng = -122.41;
@@ -52,13 +52,17 @@ export class MapComponent implements OnInit {
       center: [this.lng, this.lat]
     });
 
+      this.http.getProfile(localStorage.getItem('userID')).subscribe((res)=>{
+        this.secondEmail = res['second_email'];
+        // console.log(this.secondEmail);
+      });
     // this.map.addControl(new mapboxgl.FullscreenControl());
   }
 
   sendmail() {
     let user = {
       name: "http://localhost:4200/currentlocation",
-      email: "dhruvam.150410107115@gmail.com" //this.userService.secondEmail
+      email: this.secondEmail //this.userService.secondEmail
     };
     this.http.sendEmail("http://localhost:3000/api/sendmail", user).subscribe(
       data => {
@@ -71,5 +75,9 @@ export class MapComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  ngOnDestroy(){
+    sessionStorage.removeItem('location');
   }
 }

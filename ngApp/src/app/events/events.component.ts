@@ -6,7 +6,7 @@ import { EventService } from "../common/service/event.service";
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.css']
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit,OnDestroy {
 
       ridelist : any = [];
       rides;
@@ -21,6 +21,8 @@ export class EventsComponent implements OnInit {
   }
 
   ngOnDestroy() {
+
     this.rides.unsubscribe();
+
 }
 }

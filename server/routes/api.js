@@ -502,7 +502,7 @@ router.delete('/riderdeactive/:id', async (req, res) => {
 
 router.get('/user_rides/:id', async (req, res) => {
   try {
-    let id = req.params.id; // todo owener id populate is left => rides.rideID && transportByme.reqid.userid
+    let id = req.params.id; 
     let userdetail = await User.findById(id).populate('loadtransport.shippedBy loadtransport.reqid').populate({
       path: 'rides.rideID'
     }).populate('transportByme.reqid').exec(function(err, docs) {
