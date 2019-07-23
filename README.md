@@ -28,7 +28,7 @@ The “Ride Sharing And Loading Shuttle”, this portal works for people who are
 |:--------------:|:-------------:|:-----------:|
 | Express        | Angular       | Npm       |
 | Mongo/Mongoose | Angular Material| cors         |
-| JWT            | Bootstrap      ||     
+| JWT            | Bootstrap      || nodemon    
 | NodeMailer     | Mapboxgl     ||
 
 
@@ -37,6 +37,8 @@ The “Ride Sharing And Loading Shuttle”, this portal works for people who are
 ```bash
  git clone https://github.com/harshilparmar/carpool 
  npm install in both ngApp and server
+ cd/ngApp & ng serve
+ cd/server & node server
 ```
 
 ## Contributing
