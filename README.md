@@ -28,7 +28,7 @@ The “Ride Sharing And Loading Shuttle”, this portal works for people who are
 |:--------------:|:-------------:|:-----------:|
 | Express        | Angular       | Npm       |
 | Mongo/Mongoose | Angular Material| cors         |
-| JWT            | Bootstrap      || nodemon    |
+| JWT            | Bootstrap      | nodemon    |
 | NodeMailer     | Mapboxgl     ||
 
 
