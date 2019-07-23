@@ -1,6 +1,6 @@
 # RIDE SHARING & LOADING SHUTTLE
 
-The “Ride Sharing And Loading Shuttle”, this portal works for people who are traveling domestically or locally. In this application, there will be live location management where the customer is traveling, thus security is one of our primary focuses for the customers. Another important feature we are providing is a loading shuttle. This can be efficiently used by companies who are dealing with transportation and delivery management.  
+The “Ride Sharing And Loading Shuttle”, this portal works for people who are traveling domestically or locally. In this application, there will be live location management where the customer is traveling, thus security is one of our primary focuses for the customers.Without admin, confirmation user don't get permission. Another important feature we are providing is a loading shuttle. This can be efficiently used by companies who are dealing with transportation and delivery management.
 
 ## Functional Requirements
 * The system must show the list of offered ride.
@@ -31,6 +31,12 @@ The “Ride Sharing And Loading Shuttle”, this portal works for people who are
 | JWT            | Bootstrap      | nodemon    |
 | NodeMailer     | Mapboxgl     ||
 
+## Requirements
+
+Have these packages installed and running on your system.
+
+- [Node.js](https://nodejs.org/download/), and npm.
+- [MongoDB](https://www.mongodb.org/downloads)
 
 
 ## Installation
