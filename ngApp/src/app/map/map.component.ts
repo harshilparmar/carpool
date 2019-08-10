@@ -15,6 +15,7 @@ export class MapComponent implements OnInit,OnDestroy {
   style = "mapbox://styles/mapbox/outdoors-v9";
   lat = 37.75;
   lng = -122.41;
+  // btnStat : boolean = false;
 
   constructor(private http: UserprofileService) {}
 

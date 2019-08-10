@@ -39,6 +39,8 @@ export class AuthGuard implements CanActivate {
               return true;}
               else if(state.url.indexOf('admin')!=-1){
               return true;}
+              else if(state.url.indexOf('load')!=-1){
+                return true;}
               else if(state.url.indexOf('currentlocation')!=-1){
                 this.userService.mapage =  true;
                 sessionStorage.setItem('location','true');

@@ -78,7 +78,7 @@ import { MapComponent } from './map/map.component';
     RideDetailComponent,
     ErrorComponent,
     LoadregComponent,
-    MapComponent,
+    MapComponent
 
   ],
   imports: [

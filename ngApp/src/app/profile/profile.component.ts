@@ -11,13 +11,13 @@ import { Router } from '@angular/router';
 export class ProfileComponent implements OnInit,OnDestroy {
   // pandingReq
   userDetail : any = {};
-  rideReq  : any ;
+  rideReq  : any = [];
   userRides : any = {};
   user$ :any = {};
   toggle : boolean = true;
   ridedetail : any = {};
   owenerRides : any = {};
-  loadReq : any = {};
+  loadReq : any = [];
   loadReqaccepted : any = {};
   no_loadreq : boolean =  false;
   profile : any;
@@ -79,7 +79,7 @@ this.profileservice.owenerRides().subscribe((res)=>{
 
 this.profileservice.loadDetail().subscribe((res)=>{
   this.loadReq =  res;
-
+  // console.log(this.loadReq)
 });
 
 // this.profileservice.loadAcceptDetail().subscribe((res)=>{
@@ -101,7 +101,7 @@ this.profileservice.loadDetail().subscribe((res)=>{
       (err) => { console.log(err); });
   }
 
-  user(data){
+    user(data){
      this.profileservice.getProfile(data).subscribe((res)=>{
       this.user$ = res;
     });

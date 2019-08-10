@@ -51,7 +51,7 @@ const routes: Routes = [
   {
     path: 'beOwener',
     component: OwnerRegComponent,
-    // canActivate : [AuthGuard]
+    canActivate : [AuthGuard]
 
   },
   {
@@ -62,8 +62,8 @@ const routes: Routes = [
   },
   {
     path: 'load',
-    component: LoadregComponent
-    // canActivate : [AuthGuard]
+    component: LoadregComponent,
+    canActivate : [AuthGuard]
 
   },
   {
