@@ -15,6 +15,9 @@ export class MapComponent implements OnInit,OnDestroy {
   style = "mapbox://styles/mapbox/outdoors-v9";
   lat = 37.75;
   lng = -122.41;
+  newlat : number =4;
+  newlng : number ;
+  sendMailEvent  : boolean = false;
   // btnStat : boolean = false;
 
   constructor(private http: UserprofileService) {}
@@ -23,7 +26,8 @@ export class MapComponent implements OnInit,OnDestroy {
     this.initializeMap();
     setInterval(() => {
       this.initializeMap();
-    }, 50000);
+      this.sendUpdatelatlng();
+    }, 300000);   // 5 in check
 
     // console.log(this.userService.secondEmail);
     // this.initializeMap();
@@ -40,7 +44,7 @@ export class MapComponent implements OnInit,OnDestroy {
         new mapboxgl.Marker().setLngLat([this.lng, this.lat]).addTo(this.map);
       });
     }
-
+    // console.log(this.lng,this.lat);
     this.buildMap();
   }
 
@@ -60,11 +64,16 @@ export class MapComponent implements OnInit,OnDestroy {
     // this.map.addControl(new mapboxgl.FullscreenControl());
   }
 
-  sendmail() {
+
+
+
+
+  mail(lng,lat){
     let user = {
-      name: "http://localhost:4200/currentlocation",
+      name: `http://localhost:3000/api/map?lat=${lng},lng=${lat}`,
       email: this.secondEmail //this.userService.secondEmail
     };
+
     this.http.sendEmail("http://localhost:3000/api/sendmail", user).subscribe(
       data => {
         let res: any = data;
@@ -77,6 +86,30 @@ export class MapComponent implements OnInit,OnDestroy {
       }
     );
   }
+
+
+  sendmail() {
+    this.sendMailEvent = true;
+    if((this.newlat && this.newlng) == (undefined || null ))
+    {
+      this.mail(this.lng,this.lat);
+      this.newlat = this.lat;
+      this.newlng = this.lng;
+    }
+
+
+  }
+
+
+  sendUpdatelatlng(){
+        if(this.sendMailEvent){
+          if((this.newlat !== this.lat) || (this.newlng !== this.lng) )
+          {
+            this.mail(this.newlat,this.newlng);
+          }
+        }
+  }
+
 
   ngOnDestroy(){
     sessionStorage.removeItem('location');

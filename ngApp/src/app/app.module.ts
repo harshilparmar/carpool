@@ -58,7 +58,7 @@ import { ErrorComponent } from './error/error.component';
 import { LoadregComponent } from './loadshuttle/loadreg/loadreg.component';
 import { LoadService } from './common/service/load.service';
 import { MapComponent } from './map/map.component';
-// import { AdminModule } from './admin/admin.module';
+  // import { AdminModule } from './admin/admin.module';
 
 
 @NgModule({

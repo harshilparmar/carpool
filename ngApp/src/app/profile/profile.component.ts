@@ -57,7 +57,9 @@ export class ProfileComponent implements OnInit,OnDestroy {
         gender: res.gender,
         phone:  res.phone
     });
-    },(err)=>{
+
+    },
+    (err: any) => {
     console.log(err);
   });
 

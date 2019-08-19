@@ -23,7 +23,6 @@ export class UserprofileService {
   isOwener;
   isRejected;
   public secondEmail : string ;
-  mapage : boolean = false;
   getProfile(id){
     // return `this._userDetail${localStorage.getItem('userID')}`
     return this.http.get(`${this._userDetail}/${id}`);

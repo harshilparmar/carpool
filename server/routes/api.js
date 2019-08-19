@@ -693,4 +693,16 @@ async function sendMail(user, callback) {
 }
 
 
+router.get('/map',(req,res)=>{
+  let param = req.query ;
+  console.log(param);
+  res.render('map',{cdn : param});
+  // res.sendFile('../views/map.h')
+})
+
+
+
+
+
+
 module.exports = router;

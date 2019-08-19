@@ -7,19 +7,13 @@ import { UserprofileService } from "./common/service/userprofile.service";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements OnInit {
-  title = "ngApp";
-  islocation  : Boolean = (sessionStorage.getItem('location') == "true");
 
-  onMappage : boolean ;
   constructor(
     private _authService: AuthServiceService,
     private _userService: UserprofileService
   ) {}
 
   ngOnInit() {
-    // this.onMappage = this._userService.mapage;
-    // console.log(this.onMappage);
-    //todo make function which check changes
   }
 
 }
