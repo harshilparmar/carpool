@@ -11,7 +11,7 @@ const loadReq = require('../models/load_req');
 const details = require("../routes/detail.json");
 const jwt = require('jsonwebtoken');
 const path = require('path');
-mongoose.connect('mongodb://localhost:27017/carpool',{ useNewUrlParser: true } );
+mongoose.connect('mongodb://localhost:27017/carpool',{ useNewUrlParser: true },{ useUnifiedTopology: true } );
 
 var db = mongoose.connection;
 
