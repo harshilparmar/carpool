@@ -11,6 +11,8 @@ const loadReq = require('../models/load_req');
 const details = require("../routes/detail.json");
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const authController = require('../controllers/authController')
+
 mongoose.connect('mongodb://localhost:27017/carpool',{ useNewUrlParser: true },{ useUnifiedTopology: true } );
 
 var db = mongoose.connection;
@@ -64,69 +66,12 @@ function verifyToken(req, res, next) {
 
 //Register
 
-router.post('/register', (req, res) => {
-
-  let userdata = req.body;
-
-  let user = new User(userdata);
-  user.save((error, result) => {
-    if (error) {
-      return console.log(error);
-    } else {
-      let payload = {
-        subject: result._id
-      };
-      let token = jwt.sign(payload, 'secret');
-
-      res.status(200).send({
-        token,
-        payload
-      });
-    }
-  });
-
-});
+router.post('/register', authController.userSignUp);
 
 
 //login 
 
-router.post('/login', (req, res) => {
-  let userdata = req.body;
-
-  User.findOne({
-    userid: userdata.userid
-  }, (err, result) => {
-    if (err) {
-      return console.log(err);
-    } else {
-      if (!result) {
-        res.status(401).send('User not found!!');
-      } else {
-        result.comparePassword(userdata.password, function (err, isMatch) {
-          if (err) throw err;
-          if (isMatch != true) {
-            res.status(401).send('Password is worng!!');
-          } else {
-            // result.comparePassword(userdata.password, function(err, isMatch) {
-            // if (err) throw err;
-            let payload = {
-              subject: result._id,
-              admin: result.isAdmin
-            };
-            let token = jwt.sign(payload, 'secret');
-            res.status(200).send({
-              token: token,
-              payload
-            });
-
-          }
-        });
-      };
-
-    }
-
-  });
-});
+router.post('/login', authController.userLogIn);
 // });
 //
 
