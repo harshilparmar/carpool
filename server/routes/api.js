@@ -9,11 +9,12 @@ const offerRide = require('../models/offeredRide');
 const rideReq = require('../models/riderequest');
 const loadReq = require('../models/load_req');
 const details = require("../routes/detail.json");
-const jwt = require('jsonwebtoken');
 const path = require('path');
 const authController = require('../controllers/authController')
 
-mongoose.connect('mongodb://localhost:27017/carpool',{ useNewUrlParser: true },{ useUnifiedTopology: true } );
+const verifyToken = require('../middleware/verifyTocken');
+
+mongoose.connect('mongodb://127.0.0.1:27017/carpool',{ useNewUrlParser: true },{ useUnifiedTopology: true } );
 
 var db = mongoose.connection;
 
@@ -36,33 +37,6 @@ var storage = multer.diskStorage({
 var upload = multer({
   storage: storage
 });
-
-
-
-
-function verifyToken(req, res, next) {
-  if (!req.headers.authorization) {
-    return res.status(401).send('Unauthorized request')
-  }
-  let token = req.headers.authorization.split(' ')[1]
-  if (token === 'null') {
-    return res.status(401).send('Unauthorized request')
-  }
-  let payload = jwt.verify(token, 'secret')
-  if (!payload) {
-    return res.status(401).send('Unauthorized request')
-  }
-  req.userId = payload.subject
-  next()
-}
-
-
-
-
-
-
-
-
 
 //Register
 
