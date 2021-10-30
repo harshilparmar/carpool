@@ -2,19 +2,18 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
-const nodemailer = require("nodemailer");
 const User = require('../models/user');
 const tempOwener = require('../models/rider');
 const offerRide = require('../models/offeredRide');
 const rideReq = require('../models/riderequest');
 const loadReq = require('../models/load_req');
-const details = require("../routes/detail.json");
 const path = require('path');
 const authController = require('../controllers/authController')
+const helper = require('../helper/helper');
 
 const verifyToken = require('../middleware/verifyTocken');
 
-mongoose.connect('mongodb://127.0.0.1:27017/carpool',{ useNewUrlParser: true },{ useUnifiedTopology: true } );
+mongoose.connect('mongodb://127.0.0.1:27017/carpool', { useNewUrlParser: true }, { useUnifiedTopology: true });
 
 var db = mongoose.connection;
 
@@ -150,11 +149,6 @@ router.post('/rideRequest', async (req, res) => {
   }
 
 });
-
-
-
-
-
 
 // varify
 router.post('/special', verifyToken, async (req, res) => {
@@ -421,17 +415,17 @@ router.delete('/riderdeactive/:id', async (req, res) => {
 
 router.get('/user_rides/:id', async (req, res) => {
   try {
-    let id = req.params.id; 
+    let id = req.params.id;
     let userdetail = await User.findById(id).populate('loadtransport.shippedBy loadtransport.reqid').populate({
       path: 'rides.rideID'
-    }).populate('transportByme.reqid').exec(function(err, docs) {
+    }).populate('transportByme.reqid').exec(function (err, docs) {
 
       var options = {
         path: 'transportByme.reqid.userid rides.rideID.owenerID'
       };
-  
+
       if (err) return res.json(500);
-       User.populate(docs, options, function (err, projects) {
+      User.populate(docs, options, function (err, projects) {
         res.send(projects);
       });
     });
@@ -579,43 +573,17 @@ router.delete('/loadreject/:id', async (req, res) => {
 router.post("/sendmail", (req, res) => {
   // console.log("request came");
   let user = req.body;
-  sendMail(user, info => {
+  helper.sendMail(user, info => {
     // console.log(`The mail has beed send 😃 and the id is ${info.messageId}`);
     res.send(info);
   });
 });
 
-async function sendMail(user, callback) {
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: details.email,
-      pass: details.password
-    }
-  });
 
-  let mailOptions = {
-    from: '"Location of your loved ones From carpool"<example.gimail.com>', // sender address
-    to: user.email, // list of receivers
-    subject: "Track your friend", // Subject line
-    html: `<h1> <a href='${user.name}'>See current location</a> </h1><br>
-    <h4>Thanks for joining us</h4>`
-  };
-
-  // send mail with defined transport object
-  let info = await transporter.sendMail(mailOptions);
-
-  callback(info);
-}
-
-
-router.get('/map',(req,res)=>{
-  let param = req.query ;
+router.get('/map', (req, res) => {
+  let param = req.query;
   console.log(param);
-  res.render('map',{cdn : param});
+  res.render('map', { cdn: param });
   // res.sendFile('../views/map.h')
 })
 
