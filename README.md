@@ -42,8 +42,8 @@ Have these packages installed and running on your system.
 ## Installation
 ```bash
  git clone https://github.com/harshilparmar/carpool 
- npm install in both ngApp and server
- cd/ngApp & ng serve
+ npm install in both client and server
+ cd/client & ng serve
  cd/server & node server
 ```
 
