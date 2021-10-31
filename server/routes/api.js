@@ -10,6 +10,7 @@ const loadReq = require('../models/load_req');
 const path = require('path');
 const authController = require('../controllers/authController')
 const helper = require('../helper/helper');
+const rideController = require('../controllers/rideController');
 
 const verifyToken = require('../middleware/verifyTocken');
 
@@ -82,54 +83,11 @@ router.get('/event/:id', async (req, res) => {
 
 
 //common ride search
-router.post('/allride', async (req, res) => {
-
-
-  try {
-    let keyword = req.body.keyword;
-    let searchResult = await offerRide.find({
-      $text: {
-        $search: keyword
-      }
-    });
-    res.send(searchResult);
-  } catch (error) {
-    res.status(401).send(error);
-
-  }
-
-});
+router.post('/allride', rideController.allRide);
 
 //search particular ride based on route
 
-router.post('/search', async (req, res) => {
-
-
-  try {
-    // console.log(req.body.des);
-    let source = req.body.src;
-    let destination = req.body.des;
-    let searchResult = await offerRide.find({
-      $and: [{
-        "departing_from": source
-      }, {
-        $or: [{
-          "arriving_at": destination
-        }, {
-          "waypoints": destination
-        }]
-      }]
-    }).collation({
-      locale: 'en',
-      strength: 1
-    });
-    res.send(searchResult);
-  } catch (error) {
-    res.status(401).send(error);
-
-  }
-
-});
+router.post('/search', rideController.searchRide);
 
 ///ride request 
 router.post('/rideRequest', async (req, res) => {
