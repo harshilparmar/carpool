@@ -11,6 +11,7 @@ const path = require('path');
 const authController = require('../controllers/authController')
 const helper = require('../helper/helper');
 const rideController = require('../controllers/rideController');
+const eventController = require('../controllers/eventController');
 
 const verifyToken = require('../middleware/verifyTocken');
 
@@ -50,36 +51,11 @@ router.post('/login', authController.userLogIn);
 //
 
 //all ride list
-router.get('/event', async (req, res) => {
-  try {
-    // let id = req.params.id;
-    let ridelist = await offerRide.find();
-    // console.log(userdetail.isRejected);
-    res.send(ridelist);
-  } catch (error) {
-    res.status(401).send(error);
-  }
-});
-
-
-
-
+router.get('/event', eventController.event);
 
 
 //particular ride by id
-router.get('/event/:id', async (req, res) => {
-  try {
-    let id = req.params.id;
-    let ridelist = await offerRide.findById(id).populate('owenerID');
-    // console.log(userdetail.isRejected);
-    res.send(ridelist);
-  } catch (error) {
-    res.status(401).send(error);
-
-  }
-
-
-});
+router.get('/event/:id', eventController.eventById);
 
 
 //common ride search
